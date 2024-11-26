@@ -8,14 +8,14 @@ canonical: "/docs/manual/latest/installation"
 
 ## Notes
 
-With the instructions below, our new standard library [ReScript Core](https://github.com/rescript-association/rescript-core) will be included by default. (In ReScript 11, it comes as a separate npm package `@rescript/core`. In future versions, it will be included in the `rescript` npm package itself.)
+With the instructions below, our new standard library [ReScript Core](https://github.com/rescript-lang/rescript-core) will be included by default. (In ReScript 11, it comes as a separate npm package `@rescript/core`. In future versions, it will be included in the `rescript` npm package itself.)
 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) version >= 14
 - One of the following package managers:
   - [npm](https://docs.npmjs.com/cli/) (comes with Node.js)
-  - [yarn](https://yarnpkg.com/)
+  - [yarn](https://yarnpkg.com/) (yarn versions >1 need to set `nodeLinker: node-modules` in `.yarnrc.yml`)
   - [pnpm](https://pnpm.io/)
   - [bun](https://bun.sh/)
 
@@ -26,7 +26,7 @@ The fastest and easiest way to spin up a new ReScript project is with the [creat
 <CodeTab labels={["npm", "npx", "yarn", "pnpm", "bun"]}>
 
 ```sh example
-npm create rescript-app
+npm create rescript-app@latest
 ```
 ```sh
 npx create-rescript-app
@@ -69,7 +69,7 @@ In the root directory of your project, execute:
 <CodeTab labels={["npm", "npx", "yarn", "pnpm", "bun"]}>
 
 ```sh
-npm create rescript-app
+npm create rescript-app@latest
 ```
 ```sh
 npx create-rescript-app
@@ -118,7 +118,7 @@ bun create rescript-app
     ],
     "package-specs": [
       {
-        "module": "es6",
+        "module": "esmodule",
         "in-source": true
       }
     ],

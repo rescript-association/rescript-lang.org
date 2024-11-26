@@ -9,7 +9,7 @@ let getStaticPathsByVersion: (
   ~version: string,
 ) => promise<{
   "fallback": bool,
-  "paths": Js.Array2.t<{
-    "params": {"slug": array<Js.String2.t>},
+  "paths": array<{
+    "params": {"slug": array<string>},
   }>,
 }>

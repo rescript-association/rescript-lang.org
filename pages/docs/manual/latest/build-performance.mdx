@@ -25,7 +25,7 @@ import Image from "src/components/Image";
 
 ## Under the Hood
 
-ReScript itself uses a build system under the hood, called [Ninja](https://ninja-build.org). Ninja is like Make, but cross-platform, minimal, focuses in perf and destined to be more of a low-level building block than a full-blown build system. In this regard, Ninja's a great implementation detail for `rescript`.
+ReScript itself uses a build system under the hood, called [Ninja](https://ninja-build.org). Ninja is like Make, but cross-platform, minimal, focuses on perf and destined to be more of a low-level building block than a full-blown build system. In this regard, Ninja's a great implementation detail for `rescript`.
 
 ReScript reads into `rescript.json` and generates the Ninja build file in `lib/bs`. The file contains the low-level compiler commands, namespacing rules, intermediate artifacts generation & others. It then runs `ninja` for the actual build.
 

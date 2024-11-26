@@ -20,7 +20,7 @@ ReScript comes with APIs for doing dynamic imports both for single values and fo
 
 Let's look at a small example. First we'll define a simple component:
 
-```rescript
+```res example
 // Title.res
 @react.component
 let make = (~text) => {
@@ -33,12 +33,12 @@ Now we can dynamically import the `<Title/>` component by passing the result of 
 ```rescript
 // SomeOtherFile.res
 module LazyTitle = {
-  let make = React.lazy_(() => Js.import(Title.make))
+  let make = React.lazy_(() => import(Title.make))
 }
 
 let titleJsx = <LazyTitle text="Hello!" />
 ```
 
-That's all the code we need! The new `<LazyTitle />` component behaves exactly the same as the wrapped `<Title />` component, but will be lazy loaded via React's built in lazy mechanism.
+That's all the code we need! The new `<LazyTitle />` component behaves exactly the same as the wrapped `<Title />` component, but will be lazy loaded via React's built-in lazy mechanism.
 
-> You can read more about `Js.import` and dynamic import in ReScript in [this part of the documentation](/docs/manual/latest/import-from-export-to-js#dynamic-import).
+> You can read more about `import` and dynamic import in ReScript in [this part of the documentation](/docs/manual/latest/import-from-export-to-js#dynamic-import).

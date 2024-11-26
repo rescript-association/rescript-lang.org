@@ -14,11 +14,12 @@ const { ProvidePlugin } = webpack;
 const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
 
 const config = {
+  output: process.env.BUILD_STATIC === 'true' ? 'export' : undefined,
   pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs"],
   env: {
     ENV: process.env.NODE_ENV,
   },
-  swcMinify: true,
+  swcMinify: false,
   webpack: (config, options) => {
     const { isServer } = options;
     if (!isServer) {

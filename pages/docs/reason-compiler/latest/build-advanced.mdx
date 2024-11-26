@@ -9,24 +9,24 @@ You might use some pre-processor to generate boilerplate code during development
 - System-dependent, which should be delayed until running on user machines.
 - System-independent: lex, yacc, m4, re2c, etc, which can be executed any time.
 
-BS has built in support for [conditional compilation](conditional-compilation.md), which satisfies the first point. This section is about the second point.
+BS has built-in support for [conditional compilation](conditional-compilation.md), which satisfies the first point. This section is about the second point.
 
 An example, where bsb uses [ocamlyacc](http://caml.inria.fr/pub/docs/manual-ocaml-4.00/manual026.html):
 
 ```json
 {
-  "generators" : [
+  "generators": [
     {
-      "name" : "ocamlyacc",
+      "name": "ocamlyacc",
       "command": "ocamlyacc $in"
     }
   ],
-  "sources" : {
-    "dir" : "src",
-    "generators" : [
+  "sources": {
+    "dir": "src",
+    "generators": [
       {
-        "name" : "ocamlyacc",
-        "edge" : ["test.ml", "test.mli", ":", "test.mly"]
+        "name": "ocamlyacc",
+        "edge": ["test.ml", "test.mli", ":", "test.mly"]
       }
     ]
   }
@@ -41,7 +41,7 @@ When developing a project, `bsb` will track the dependencies between `test.ml` a
 
 ```json
 {
-  "cut-generators" : true
+  "cut-generators": true
 }
 ```
 

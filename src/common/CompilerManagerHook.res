@@ -24,7 +24,7 @@ module LoadScript = {
   external removeScript: (~src: string) => unit = "removeScript"
 
   let loadScriptPromise = (url: string) => {
-    Js.Promise2.make((~resolve, ~reject as _) => {
+    Promise.make((resolve, _) => {
       loadScript(
         ~src=url,
         ~onSuccess=() => resolve(Ok()),
@@ -45,11 +45,11 @@ module Semver = {
   */
   let parse = (versionStr: string) => {
     let parsePreRelease = str => {
-      switch str->Js.String2.split("-") {
+      switch str->String.split("-") {
       | [_, identifier] =>
-        switch identifier->Js.String2.split(".") {
+        switch identifier->String.split(".") {
         | [name, number] =>
-          switch Belt.Int.fromString(number) {
+          switch Int.fromString(number) {
           | None => None
           | Some(buildIdentifier) =>
             switch name {
@@ -67,15 +67,14 @@ module Semver = {
     }
 
     // Some version contain a suffix. Example: v11.0.0-alpha.5, v11.0.0-beta.1
-    let isPrerelease = versionStr->Js.String2.search(%re("/-/")) != -1
+    let isPrerelease = versionStr->String.search(%re("/-/")) != -1
 
     // Get the first part i.e vX.Y.Z
-    let versionNumber =
-      versionStr->Js.String2.split("-")->Belt.Array.get(0)->Belt.Option.getWithDefault(versionStr)
+    let versionNumber = versionStr->String.split("-")->Array.get(0)->Option.getOr(versionStr)
 
-    switch versionNumber->Js.String2.replace("v", "")->Js.String2.split(".") {
+    switch versionNumber->String.replace("v", "")->String.split(".") {
     | [major, minor, patch] =>
-      switch (major->Belt.Int.fromString, minor->Belt.Int.fromString, patch->Belt.Int.fromString) {
+      switch (major->Int.fromString, minor->Int.fromString, patch->Int.fromString) {
       | (Some(major), Some(minor), Some(patch)) =>
         let preReleaseIdentifier = if isPrerelease {
           parsePreRelease(versionStr)
@@ -90,16 +89,16 @@ module Semver = {
   }
 
   let toString = ({major, minor, patch, preRelease}) => {
-    let mainVersion = `v${major->Belt.Int.toString}.${minor->Belt.Int.toString}.${patch->Belt.Int.toString}`
+    let mainVersion = `v${major->Int.toString}.${minor->Int.toString}.${patch->Int.toString}`
 
     switch preRelease {
     | None => mainVersion
     | Some(identifier) =>
       let identifier = switch identifier {
-      | Dev(number) => `dev.${number->Belt.Int.toString}`
-      | Alpha(number) => `alpha.${number->Belt.Int.toString}`
-      | Beta(number) => `beta.${number->Belt.Int.toString}`
-      | Rc(number) => `rc.${number->Belt.Int.toString}`
+      | Dev(number) => `dev.${number->Int.toString}`
+      | Alpha(number) => `alpha.${number->Int.toString}`
+      | Beta(number) => `beta.${number->Int.toString}`
+      | Rc(number) => `rc.${number->Int.toString}`
       }
 
       `${mainVersion}-${identifier}`
@@ -135,11 +134,17 @@ let getLibrariesForVersion = (~version: Semver.t): array<string> => {
     []
   }
 
-  // Since version 11, we ship the compiler-builtins as a separate file, and
-  // we also added @rescript/core as a pre-vendored package
+  // Since version 11, we ship the compiler-builtins as a separate file
   if version.major >= 11 {
-    libraries->Js.Array2.push("@rescript/core")->ignore
-    libraries->Js.Array2.push("compiler-builtins")->ignore
+    libraries->Array.push("compiler-builtins")
+  }
+
+  // From version 11 to 12.0.0-alpha.3 @rescript/core is an external package
+  switch version {
+  | {major: 11}
+  | {major: 12, minor: 0, patch: 0, preRelease: Some(Alpha(1 | 2 | 3))} =>
+    libraries->Array.push("@rescript/core")
+  | _ => ()
   }
 
   libraries
@@ -148,7 +153,7 @@ let getLibrariesForVersion = (~version: Semver.t): array<string> => {
 let getOpenModules = (~apiVersion: Version.t, ~libraries: array<string>): option<array<string>> =>
   switch apiVersion {
   | V1 | V2 | V3 | UnknownVersion(_) => None
-  | V4 => libraries->Belt.Array.some(el => el === "@rescript/core") ? Some(["RescriptCore"]) : None
+  | V4 | V5 => libraries->Array.some(el => el === "@rescript/core") ? Some(["RescriptCore"]) : None
   }
 
 /*
@@ -176,7 +181,7 @@ let attachCompilerAndLibraries = async (~version, ~libraries: array<string>, ())
   switch await LoadScript.loadScriptPromise(compilerUrl) {
   | Error(_) => Error([`Could not load compiler from url ${compilerUrl}`])
   | Ok(_) =>
-    let promises = Belt.Array.map(libraries, async lib => {
+    let promises = Array.map(libraries, async lib => {
       let cmijUrl = CdnMeta.getLibraryCmijUrl(version, lib)
       switch await LoadScript.loadScriptPromise(cmijUrl) {
       | Error(_) => Error(`Could not load cmij from url ${cmijUrl}`)
@@ -184,9 +189,9 @@ let attachCompilerAndLibraries = async (~version, ~libraries: array<string>, ())
       }
     })
 
-    let all = await Js.Promise2.all(promises)
+    let all = await Promise.all(promises)
 
-    let errors = Belt.Array.keepMap(all, r => {
+    let errors = Array.filterMap(all, r => {
       switch r {
       | Error(msg) => Some(msg)
       | _ => None
@@ -208,7 +213,7 @@ type selected = {
   id: Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
-  ocamlVersion: string,
+  ocamlVersion: option<string>,
   libraries: array<string>,
   config: Config.t,
   instance: Compiler.t,
@@ -237,6 +242,21 @@ type action =
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t)
 
+let createUrl = (pathName, ready) => {
+  let params = switch ready.targetLang {
+  | Res => []
+  | lang => [("ext", RescriptCompilerApi.Lang.toExt(lang))]
+  }
+  Array.push(params, ("version", "v" ++ ready.selected.compilerVersion))
+  Array.push(params, ("module", ready.selected.config.module_system))
+  Array.push(params, ("code", ready.code->LzString.compressToEncodedURIComponent))
+  let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
+  let url = pathName ++ "?" ++ querystring
+  url
+}
+
+let defaultModuleSystem = "esmodule"
+
 // ~initialLang:
 // The target language the compiler should be set to during
 // playground initialization.  If the compiler doesn't support the language, it
@@ -250,16 +270,18 @@ type action =
 //  cases where the output didn't visually change)
 let useCompilerManager = (
   ~initialVersion: option<Semver.t>=?,
+  ~initialModuleSystem=defaultModuleSystem,
   ~initialLang: Lang.t=Res,
   ~onAction: option<action => unit>=?,
   ~versions: array<Semver.t>,
   (),
 ) => {
   let (state, setState) = React.useState(_ => Init)
+  let router = Next.Router.useRouter()
 
   // Dispatch method for the public interface
   let dispatch = (action: action): unit => {
-    Belt.Option.forEach(onAction, cb => cb(action))
+    Option.forEach(onAction, cb => cb(action))
     switch action {
     | SwitchToCompiler(id) =>
       switch state {
@@ -295,7 +317,7 @@ let useCompilerManager = (
 
         let currentLang = ready.targetLang
 
-        Js.Array2.find(availableTargetLangs, l => l === lang)->Belt.Option.forEach(lang => {
+        Array.find(availableTargetLangs, l => l === lang)->Option.forEach(lang => {
           // Try to automatically transform code
           let (result, targetLang) = switch ready.selected.apiVersion {
           | V1 =>
@@ -382,7 +404,7 @@ let useCompilerManager = (
       | CompilerLoadingError(msg) => msg
       }
       switch prev {
-      | Ready(ready) => Ready({...ready, errors: Js.Array2.concat(ready.errors, [msg])})
+      | Ready(ready) => Ready({...ready, errors: Array.concat(ready.errors, [msg])})
       | _ => SetupFailed(msg)
       }
     })
@@ -407,12 +429,12 @@ let useCompilerManager = (
 
               // Note: The compiler bundle currently defaults to
               // commonjs when initiating the compiler, but our playground
-              // should default to ES6. So we override the config
+              // should default to esmodule. So we override the config
               // and use the `setConfig` function to sync up the
               // internal compiler state with our playground state.
               let config = {
                 ...instance->Compiler.getConfig,
-                module_system: "es6",
+                module_system: initialModuleSystem,
                 ?open_modules,
               }
               instance->Compiler.setConfig(config)
@@ -429,8 +451,8 @@ let useCompilerManager = (
 
               let targetLang =
                 Version.availableLanguages(apiVersion)
-                ->Js.Array2.find(l => l === initialLang)
-                ->Belt.Option.getWithDefault(Version.defaultTargetLang)
+                ->Array.find(l => l === initialLang)
+                ->Option.getOr(Version.defaultTargetLang)
 
               setState(_ => Ready({
                 code: "",
@@ -441,7 +463,7 @@ let useCompilerManager = (
                 result: FinalResult.Nothing,
               }))
             | Error(errs) =>
-              let msg = Js.Array2.joinWith(errs, "; ")
+              let msg = Array.join(errs, "; ")
 
               dispatchError(CompilerLoadingError(msg))
             }
@@ -457,7 +479,7 @@ let useCompilerManager = (
           LoadScript.removeScript(~src=CdnMeta.getCompilerUrl(ready.selected.id))
 
           // We are removing the previous libraries, therefore we use ready.selected here
-          Belt.Array.forEach(ready.selected.libraries, lib =>
+          Array.forEach(ready.selected.libraries, lib =>
             LoadScript.removeScript(~src=CdnMeta.getLibraryCmijUrl(ready.selected.id, lib))
           )
 
@@ -465,7 +487,11 @@ let useCompilerManager = (
           let apiVersion = apiVersion->Version.fromString
           let open_modules = getOpenModules(~apiVersion, ~libraries)
 
-          let config = {...instance->Compiler.getConfig, ?open_modules}
+          let config = {
+            ...instance->Compiler.getConfig,
+            module_system: defaultModuleSystem,
+            ?open_modules,
+          }
           instance->Compiler.setConfig(config)
 
           let selected = {
@@ -487,7 +513,7 @@ let useCompilerManager = (
             result: FinalResult.Nothing,
           }))
         | Error(errs) =>
-          let msg = Js.Array2.joinWith(errs, "; ")
+          let msg = Array.join(errs, "; ")
 
           dispatchError(CompilerLoadingError(msg))
         }
@@ -511,6 +537,11 @@ let useCompilerManager = (
             )
           | Lang.Res => instance->Compiler.resCompile(code)
           }
+        | V5 =>
+          switch lang {
+          | Lang.Res => instance->Compiler.resCompile(code)
+          | _ => CompilationResult.UnexpectedError(`Can't handle with lang: ${lang->Lang.toString}`)
+          }
         | UnknownVersion(version) =>
           CompilationResult.UnexpectedError(
             `Can't handle result of compiler API version "${version}"`,
@@ -518,8 +549,10 @@ let useCompilerManager = (
         }
 
         setState(_ => Ready({...ready, result: FinalResult.Comp(compResult)}))
-      | SetupFailed(_)
-      | Ready(_) => ()
+      | SetupFailed(_) => ()
+      | Ready(ready) =>
+        let url = createUrl(router.route, ready)
+        Webapi.Window.History.replaceState(null, ~url)
       }
     }
 

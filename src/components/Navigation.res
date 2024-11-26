@@ -6,19 +6,15 @@ let activeLink = "font-medium text-fire-30 border-b border-fire"
 let linkOrActiveLink = (~target, ~route) => target === route ? activeLink : link
 
 let linkOrActiveLinkSubroute = (~target, ~route) =>
-  Js.String2.startsWith(route, target) ? activeLink : link
+  String.startsWith(route, target) ? activeLink : link
 
 let linkOrActiveApiSubroute = (~route) => {
   let url = Url.parse(route)
-  switch Belt.Array.get(url.pagepath, 0) {
+  switch url.pagepath[0] {
   | Some("api") => activeLink
   | _ => link
   }
 }
-
-let githubHref = "https://github.com/rescript-lang/rescript-compiler"
-//let twitterHref = "https://twitter.com/rescriptlang"
-let discourseHref = "https://forum.rescript-lang.org"
 
 module CollapsibleLink = {
   // KeepOpen = Menu has been opened and should stay open
@@ -202,7 +198,7 @@ module DocsSection = {
         imgSrc: "/static/ic_reanalyze@2x.png",
         title: "Reanalyze",
         description: "Dead Code & Termination analysis",
-        href: "https://github.com/rescript-association/reanalyze",
+        href: "https://github.com/rescript-lang/reanalyze",
         isActive: _ => {
           false
         },
@@ -219,7 +215,7 @@ module DocsSection = {
           <div>
             <ul className="space-y-2 ml-2 mt-6">
               {languageManual
-              ->Js.Array2.map(item => {
+              ->Array.map(item => {
                 let (text, href) = item
 
                 let linkClass = if router.route === href {
@@ -248,7 +244,7 @@ module DocsSection = {
           </div>
           <div>
             <div className="mt-6">
-              {Js.Array2.map(documentation, item => {
+              {Array.map(documentation, item => {
                 let {imgSrc, title, href, description, isActive} = item
 
                 let icon = <img style={ReactDOM.Style.make(~width="2.1875rem", ())} src={imgSrc} />
@@ -324,8 +320,8 @@ module DocsSection = {
       | {base: ["docs", "manual"]} =>
         let targetUrl =
           "/" ++
-          (Js.Array2.joinWith(url.base, "/") ++
-          ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
+          (Array.join(url.base, "/") ++
+          ("/" ++ (version ++ ("/" ++ Array.join(url.pagepath, "/")))))
         router->Next.Router.push(targetUrl)
       | _ => ()
       }
@@ -373,9 +369,6 @@ module MobileNav = {
     <div className="border-gray-80 border-t">
       <ul>
         <li className=base>
-          <DocSearch.Textbox id="docsearch-mobile" />
-        </li>
-        <li className=base>
           <Link href="/try" className={linkOrActiveLink(~target="/try", ~route)}>
             {React.string("Playground")}
           </Link>
@@ -388,24 +381,29 @@ module MobileNav = {
         /*
          <li className=base>
            <Link href="/community"  className={linkOrActiveLink(~target="/community", ~route)}>
-             
+
                {React.string("Community")}
-             
+
            </Link>
          </li>
  */
         <li className=base>
-          <a href="https://twitter.com/rescriptlang" rel="noopener noreferrer" className=extLink>
-            {React.string("Twitter")}
+          <a href=Constants.xHref rel="noopener noreferrer" className=extLink>
+            {React.string("X")}
           </a>
         </li>
         <li className=base>
-          <a href=githubHref rel="noopener noreferrer" className=extLink>
+          <a href=Constants.blueSkyHref rel="noopener noreferrer" className=extLink>
+            {React.string("Bluesky")}
+          </a>
+        </li>
+        <li className=base>
+          <a href=Constants.githubHref rel="noopener noreferrer" className=extLink>
             {React.string("GitHub")}
           </a>
         </li>
         <li className=base>
-          <a href=discourseHref rel="noopener noreferrer" className=extLink>
+          <a href=Constants.discourseHref rel="noopener noreferrer" className=extLink>
             {React.string("Forum")}
           </a>
         </li>
@@ -416,7 +414,7 @@ module MobileNav = {
 
 /* isOverlayOpen: if the mobile overlay is toggled open */
 @react.component
-let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
+let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) => unit) => {
   let minWidth = "20rem"
   let router = Next.Router.useRouter()
   let route = router.route
@@ -432,7 +430,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         | {base: ["docs", "react"]}
         | {base: ["docs", "gentype"]}
         | {base: ["docs", "manual"]} =>
-          switch Belt.Array.get(url.pagepath, 0) {
+          switch url.pagepath[0] {
           | Some("api") => false
           | _ => true
           }
@@ -444,16 +442,13 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     },
   ])
 
-  let isSubnavOpen = Js.Array2.find(collapsibles, c => c.state !== Closed) !== None
-
-  let (isOverlayOpen, setOverlayOpen) = overlayState
+  let isSubnavOpen = Array.find(collapsibles, c => c.state !== Closed) !== None
 
   let toggleOverlay = () => setOverlayOpen(prev => !prev)
 
-  let resetCollapsibles = () =>
-    setCollapsibles(prev => Belt.Array.map(prev, c => {...c, state: Closed}))
+  let resetCollapsibles = () => setCollapsibles(prev => Array.map(prev, c => {...c, state: Closed}))
 
-  let navRef = React.useRef(Js.Nullable.null)
+  let navRef = React.useRef(Nullable.null)
   Hooks.useOutsideClick(ReactDOM.Ref.domRef(navRef), resetCollapsibles)
 
   /* let windowWidth = useWindowWidth() */
@@ -493,7 +488,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
 
   let onStateChange = (~id, state) => {
     setCollapsibles(prev => {
-      Belt.Array.keepMap(prev, next => {
+      Array.filterMap(prev, next => {
         if next.title === id {
           Some({...next, state})
         } else {
@@ -503,7 +498,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     })
   }
 
-  let collapsibleElements = Js.Array2.map(collapsibles, coll => {
+  let collapsibleElements = Array.map(collapsibles, coll => {
     <CollapsibleLink
       key={coll.title}
       title={coll.title}
@@ -521,7 +516,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       ref={ReactDOM.Ref.domRef(navRef)}
       id="header"
       style={ReactDOMStyle.make(~minWidth, ())}
-      className={fixedNav ++ " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14"}>
+      className={fixedNav ++ " items-center z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14 transition duration-300 ease-out group-[.nav-disappear]:-translate-y-16 md:group-[.nav-disappear]:transform-none"}>
       <div className="flex justify-between items-center h-full w-full max-w-1280">
         <div className="h-8 w-8 lg:h-10 lg:w-32">
           <a
@@ -552,27 +547,27 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
               {React.string("Blog")}
             </Link>
             <Link
-              href="/community"
+              href="/community/overview"
               className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}>
               {React.string("Community")}
             </Link>
           </div>
-          <div className="hidden md:flex items-center">
-            <div className="hidden sm:block mr-6">
-              <DocSearch />
+          <div className="md:flex flex items-center">
+            <Search />
+            <div className="hidden md:flex items-center ml-5">
+              <a href=Constants.githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+                <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
+              <a href=Constants.xHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+                <Icon.X className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
+              <a href=Constants.blueSkyHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+                <Icon.Bluesky className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
+              <a href=Constants.discourseHref rel="noopener noreferrer" className=link>
+                <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
             </div>
-            <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
-              <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
-            </a>
-            <a
-              href="https://twitter.com/rescriptlang"
-              rel="noopener noreferrer"
-              className={"mr-5 " ++ link}>
-              <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
-            </a>
-            <a href=discourseHref rel="noopener noreferrer" className=link>
-              <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
-            </a>
           </div>
         </div>
       </div>
@@ -612,3 +607,5 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     />
   </>
 }
+
+let make = React.memo(make)

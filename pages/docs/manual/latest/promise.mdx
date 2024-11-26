@@ -24,7 +24,7 @@ type user = {name: string}
 let fetchUser: string => promise<user>
 ```
 
-To work with promise values (instead of using `async` / `await`) you may want to use the built in `Promise` module. 
+To work with promise values (instead of using `async` / `await`) you may want to use the built-in `Promise` module. 
 
 ## Promise
 
@@ -76,6 +76,10 @@ let logAsyncMessage = async () => {
 ```
 
 Needless to say, the async / await version offers better ergonomics and less opportunities to run into type issues.
+
+### Handling Rejected Promises
+
+You can handle a rejected promise using the [`Promise.catch()`](./api/core/promise#value-catch) method, which allows you to catch and manage errors effectively.
 
 ### Run multiple promises in parallel
 

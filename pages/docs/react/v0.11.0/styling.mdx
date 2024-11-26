@@ -14,7 +14,6 @@ React comes with builtin support for inline styles, but there are also a number 
 
 If they work in JS then they almost certainly work in ReScript. In the next few sections, we've shared some ideas for working with popular libraries. If you're interested in working with one you don't see here, search the [package index](https://rescript-lang.org/packages) or post in [the forum](https://forum.rescript-lang.org).
 
-
 ## Inline Styles
 
 This is the most basic form of styling, coming straight from the 90s. You can apply a `style` attribute to any DOM element with our `ReactDOM.Style.make` API:
@@ -45,11 +44,11 @@ let style =
 Use a `%%raw` expression to import CSS files within your ReScript / React component code:
 
 ```rescript
-// in a CommonJS setup
-%%raw("require('./styles/main.css')")
-
-// or with ES6
+// in a JS module setup
 %%raw("import './styles/main.css'")
+
+// or with CommonJS
+%%raw("require('./styles/main.css')")
 ```
 
 ## CSS Modules
@@ -62,11 +61,11 @@ As an example, let's say we have a CSS module like this:
 /* styles.module.css */
 
 .root {
-  color: red
+  color: red;
 }
 ```
 
-We now need to create a module binding that imports our styles as a JS object: 
+We now need to create a module binding that imports our styles as a JS object:
 
 ```res
 // {..} means we are handling a JS object with an unknown
@@ -78,7 +77,6 @@ let app = <div className={styles["root"]} />
 ```
 
 **Note:** `{..}` is an open [JS object type](/docs/manual/latest/object#type-declaration), which means the type checker will not type check correct classname usage. If you want to enforce compiler errors, replace `{..}` with a concrete JS object type, such as `{"root": string}`.
-
 
 ## CSS Utility Libraries
 
@@ -122,8 +120,7 @@ let make = (~active: bool) => {
 }
 ```
 
-> **Hint:** `rescript-lang.org` actually uses TailwindCSS under the hood! Check out our [codebase](https://github.com/rescript-association/rescript-lang.org) to get some more inspiration on usage patterns.
-
+> **Hint:** `rescript-lang.org` actually uses TailwindCSS under the hood! Check out our [codebase](https://github.com/rescript-lang/rescript-lang.org) to get some more inspiration on usage patterns.
 
 ## CSS-in-JS
 
@@ -181,7 +178,7 @@ let app = <div
 />
 ```
 
-Here we used the already existing `React.Style.t` type to enforce valid CSS attribute names. 
+Here we used the already existing `React.Style.t` type to enforce valid CSS attribute names.
 Last but not least, you can also bind to functions that let you use raw CSS directly:
 
 ```res

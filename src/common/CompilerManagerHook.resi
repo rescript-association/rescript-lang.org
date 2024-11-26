@@ -28,7 +28,7 @@ type selected = {
   id: Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
-  ocamlVersion: string,
+  ocamlVersion: option<string>,
   libraries: array<string>,
   config: Config.t,
   instance: Compiler.t,
@@ -59,8 +59,11 @@ type action =
 
 let useCompilerManager: (
   ~initialVersion: Semver.t=?,
+  ~initialModuleSystem: string=?,
   ~initialLang: Lang.t=?,
   ~onAction: action => unit=?,
   ~versions: array<Semver.t>,
   unit,
 ) => (state, action => unit)
+
+let createUrl: (string, ready) => string

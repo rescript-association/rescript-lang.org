@@ -18,7 +18,7 @@ module Link = Next.Link
 let defaultPreviewImg = "/static/Art-3-rescript-launch.jpg"
 
 // For encoding reasons, see https://shripadk.github.io/react/docs/jsx-gotchas.html
-let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
+let middleDotSpacer = " " ++ (String.fromCharCode(183) ++ " ")
 
 module Badge = {
   @react.component
@@ -39,44 +39,34 @@ module Badge = {
     </div>
   }
 }
+
+type category =
+  | /** Actually only unarchived */ All
+  | Archived
+
 module CategorySelector = {
-  type selection =
-    | All
-    | Archived
-
-  let renderTab = (~text: string, ~isActive: bool, ~onClick) => {
-    let active = "bg-gray-20 text-gray-80 rounded py-1"
-    <div
-      key=text
-      onClick
-      className={(
-        isActive ? active : "hover:cursor-pointer bg-white hover:text-gray-80"
-      ) ++ "  px-4 inline-block"}>
-      {React.string(text)}
-    </div>
-  }
-
   @react.component
-  let make = (~selected: selection, ~onSelected: selection => unit) => {
+  let make = (~selected: category) => {
     let tabs = [All, Archived]
 
     <div className="text-16 w-full flex items-center justify-between text-gray-60">
-      {Belt.Array.map(tabs, tab => {
-        let onClick = evt => {
-          evt->ReactEvent.Mouse.preventDefault
-          onSelected(tab)
-        }
-
+      {tabs
+      ->Array.map(tab => {
         // Deep comparison here!
         let isActive = selected == tab
-
-        let text = switch tab {
-        | All => "All"
-        | Archived => "Archived"
+        let text = (tab :> string)
+        let href = switch tab {
+        | All => "/blog"
+        | Archived => "/blog/archived"
         }
-
-        renderTab(~isActive, ~text, ~onClick)
-      })->React.array}
+        let className =
+          switch isActive {
+          | true => "bg-gray-20 text-gray-80 rounded py-1"
+          | false => "hover:cursor-pointer bg-white hover:text-gray-80"
+          } ++ " px-4 inline-block"
+        <Link key=text href className> {React.string(text)} </Link>
+      })
+      ->React.array}
     </div>
   }
 }
@@ -89,7 +79,7 @@ module BlogCard = {
     ~author as _: BlogFrontmatter.author,
     ~category: option<string>=?,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
-    ~date: Js.Date.t,
+    ~date: Date.t,
     ~slug: string,
   ) =>
     <section className="h-full">
@@ -137,7 +127,7 @@ module FeatureCard = {
     ~title: string="Unknown Title",
     ~author: BlogFrontmatter.author,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
-    ~date: Js.Date.t,
+    ~date: Date.t,
     ~category: option<string>=?,
     ~firstParagraph: string="",
     ~slug: string,
@@ -180,7 +170,7 @@ module FeatureCard = {
               <div>
                 <a
                   className="hover:text-gray-60"
-                  href={"https://twitter.com/" ++ author.twitter}
+                  href={"https://x.com/" ++ author.xHandle}
                   rel="noopener noreferrer">
                   {React.string(author.fullname)}
                 </a>
@@ -209,42 +199,32 @@ module FeatureCard = {
 
 type params = {slug: string}
 
-type props = {
-  posts: array<BlogApi.post>,
-  archived: array<BlogApi.post>,
-}
+type props = {posts: array<BlogApi.post>, category: category}
 
 let default = (props: props): React.element => {
-  let {posts, archived} = props
+  let {posts, category} = props
 
-  let (currentSelection, setSelection) = React.useState(() => CategorySelector.All)
-
-  let content = if Belt.Array.length(posts) === 0 {
+  let content = if Array.length(posts) === 0 {
     /* <div> {React.string("Currently no posts available")} </div>; */
     <div className="mt-8">
       <Markdown.H1> {React.string("Blog not yet available")} </Markdown.H1>
       <Markdown.Warn> {React.string("This blog is currently in the works.")} </Markdown.Warn>
     </div>
   } else {
-    let filtered = switch currentSelection {
-    | All => posts
-    | Archived => archived
-    }
-
-    let result = switch Belt.Array.length(filtered) {
+    let result = switch Array.length(posts) {
     | 0 => <div> {React.string("No posts for this category available...")} </div>
     | _ =>
-      let first = Belt.Array.getExn(filtered, 0)
-      let rest = Js.Array2.sliceFrom(filtered, 1)
+      let first = Belt.Array.getExn(posts, 0)
+      let rest = Array.sliceToEnd(posts, ~start=1)
 
       let featureBox =
         <div className="w-full mb-24 lg:px-8 xl:px-0">
           <FeatureCard
-            previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
+            previewImg=?{first.frontmatter.previewImg->Null.toOption}
             title=first.frontmatter.title
-            badge=?{first.frontmatter.badge->Js.Null.toOption}
+            badge=?{first.frontmatter.badge->Null.toOption}
             author=first.frontmatter.author
-            firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
+            firstParagraph=?{first.frontmatter.description->Null.toOption}
             date={first.frontmatter.date->DateStr.toDate}
             slug={BlogApi.blogPathToSlug(first.path)}
           />
@@ -255,12 +235,12 @@ let default = (props: props): React.element => {
       | rest =>
         <div
           className="px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 gap-y-12 md:gap-y-24 w-full">
-          {Js.Array2.map(rest, post => {
-            let badge = post.frontmatter.badge->Js.Null.toOption
+          {Array.map(rest, post => {
+            let badge = post.frontmatter.badge->Null.toOption
 
             <BlogCard
               key={post.path}
-              previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
+              previewImg=?{post.frontmatter.previewImg->Null.toOption}
               title=post.frontmatter.title
               author=post.frontmatter.author
               ?badge
@@ -280,16 +260,14 @@ let default = (props: props): React.element => {
     <>
       <div className="hidden sm:flex justify-center ">
         <div className="my-16 w-full" style={ReactDOMStyle.make(~maxWidth="12rem", ())}>
-          <CategorySelector
-            onSelected={selection => setSelection(_ => selection)} selected=currentSelection
-          />
+          <CategorySelector selected=category />
         </div>
       </div>
       result
     </>
   }
 
-  let overlayState = React.useState(() => false)
+  let (isOverlayOpen, setOverlayOpen) = React.useState(() => false)
   let title = "Blog | ReScript Documentation"
 
   <>
@@ -298,7 +276,7 @@ let default = (props: props): React.element => {
     />
     <div className="mt-16 pt-2">
       <div className="text-gray-80 text-18">
-        <Navigation overlayState />
+        <Navigation isOverlayOpen setOverlayOpen />
         <div className="flex justify-center overflow-hidden">
           <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48">
             <MdxProvider components=MarkdownComponents.default>
@@ -316,12 +294,19 @@ let default = (props: props): React.element => {
   </>
 }
 
-let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
-  let (archived, nonArchived) = BlogApi.getAllPosts()->Belt.Array.partition(data => data.archived)
-
+let getStaticProps_All: Next.GetStaticProps.t<props, params> = async _ctx => {
   let props = {
-    posts: nonArchived,
-    archived,
+    posts: BlogApi.getLivePosts(),
+    category: All,
+  }
+
+  {"props": props}
+}
+
+let getStaticProps_Archived: Next.GetStaticProps.t<props, params> = async _ctx => {
+  let props = {
+    posts: BlogApi.getArchivedPosts(),
+    category: Archived,
   }
 
   {"props": props}

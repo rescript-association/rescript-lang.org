@@ -1,14 +1,9 @@
 type company = Logo({name: string, url: string, path: string})
 
 // NOTE: More details on how this works can be found in our README:
-// https://github.com/rescript-association/rescript-lang.org#how-to-add-your-company-logo-to-our-front-page
+// https://github.com/rescript-lang/rescript-lang.org#how-to-add-your-company-logo-to-our-front-page
 
 let companies = [
-  Logo({
-    name: "Juspay",
-    url: "https://juspay.in",
-    path: "/static/lp/juspay.svg",
-  }),
   Logo({
     name: "Rohea",
     url: "https://rohea.com",
@@ -63,11 +58,6 @@ let companies = [
     name: "Stencil",
     url: "https://usestencil.com",
     path: "/static/lp/stencil.svg",
-  }),
-  Logo({
-    name: "Portolab",
-    url: "https://portolab.com.br",
-    path: "/static/lp/portolab.svg",
   }),
   Logo({
     name: "Tiny",
@@ -155,6 +145,11 @@ let companies = [
     path: "/static/lp/instapainting.svg",
   }),
   Logo({
+    name: "Juspay",
+    url: "https://juspay.in",
+    path: "/static/lp/juspay.svg",
+  }),
+  Logo({
     name: "Silq",
     url: "https://www.onesilq.com/",
     path: "/static/lp/silq.svg",
@@ -173,5 +168,25 @@ let companies = [
     name: "Envio",
     url: "https://www.envio.dev/",
     path: "/static/lp/envio.svg",
+  }),
+  Logo({
+    name: "YBRU",
+    url: "https://ybru.ru",
+    path: "/static/lp/ybru.svg",
+  }),
+  Logo({
+    name: "WebCurate",
+    url: "https://webcurate.co",
+    path: "/static/lp/webcurate.svg",
+  }),
+  Logo({
+    name: "Resmume",
+    url: "https://resmume.com/",
+    path: "/static/lp/resmume.svg",
+  }),
+  Logo({
+    name: "Cardoc",
+    url: "https://www.cardoc.co.kr/",
+    path: "/static/lp/cardoc.svg",
   }),
 ]

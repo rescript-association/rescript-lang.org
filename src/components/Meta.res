@@ -41,7 +41,7 @@ let make = (
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui"
     />
     <meta key="description" name="description" content=description />
-    <meta key="keywords" name="keywords" content={Js.Array2.joinWith(keywords, ",")} />
+    <meta key="keywords" name="keywords" content={Array.join(keywords, ",")} />
     {switch canonical {
     | Some(href) => <link key="canonical" href rel="canonical" />
     | None => React.null

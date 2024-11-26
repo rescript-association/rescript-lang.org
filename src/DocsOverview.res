@@ -5,7 +5,7 @@ module Card = {
     <div style className="border border-gray-10 bg-gray-5 px-5 py-8 rounded-lg">
       <h2 className="font-bold text-24 mb-4"> {React.string(title)} </h2>
       <ul>
-        {Belt.Array.map(hrefs, ((text, href)) =>
+        {Array.map(hrefs, ((text, href)) =>
           <li key=text className="text-16 mb-1 last:mb-0">
             <Markdown.A href> {React.string(text)} </Markdown.A>
           </li>
@@ -37,7 +37,7 @@ let default = (~showVersionSelect=true) => {
     ("Package Index", "/packages"),
     ("rescript-react", "/docs/react/latest/introduction"),
     ("GenType", "/docs/manual/latest/typescript-integration"),
-    ("Reanalyze", "https://github.com/rescript-association/reanalyze"),
+    ("Reanalyze", "https://github.com/rescript-lang/reanalyze"),
   ]
 
   let tools = [("Syntax Lookup", "/syntax-lookup")]
@@ -51,8 +51,8 @@ let default = (~showVersionSelect=true) => {
 
       let targetUrl =
         "/" ++
-        (Js.Array2.joinWith(url.base, "/") ++
-        ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
+        (Array.join(url.base, "/") ++
+        ("/" ++ (version ++ ("/" ++ Array.join(url.pagepath, "/")))))
       router->Next.Router.push(targetUrl)
     }
     <div className="text-fire">

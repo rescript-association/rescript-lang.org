@@ -257,7 +257,7 @@ module HoverTooltip = {
         el: Dom.element,
         marker: CM.TextMarker.t,
         hoverHint: HoverHint.t,
-        hideTimer: option<Js.Global.timeoutId>,
+        hideTimer: option<timeoutId>,
       })
 
   let make: unit => t = %raw(`
@@ -351,7 +351,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
         let col = coords["ch"]
         let line = coords["line"] + 1
 
-        let found = hoverHints->Js.Array2.find(item => {
+        let found = hoverHints->Array.find(item => {
           let {start, end} = item
           line >= start.line && line <= end.line && col >= start.col && col <= end.col
         })
@@ -380,7 +380,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
             })
           | Shown({el, marker: prevMarker, hideTimer}) =>
             switch hideTimer {
-            | Some(timerId) => Js.Global.clearTimeout(timerId)
+            | Some(timerId) => clearTimeout(timerId)
             | None => ()
             }
             CM.TextMarker.clear(prevMarker)
@@ -405,12 +405,12 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
     switch stateRef.current {
     | Shown({el, hoverHint, marker, hideTimer}) =>
       switch hideTimer {
-      | Some(timerId) => Js.Global.clearTimeout(timerId)
+      | Some(timerId) => clearTimeout(timerId)
       | None => ()
       }
 
       marker->CM.TextMarker.clear
-      let timerId = Js.Global.setTimeout(() => {
+      let timerId = setTimeout(() => {
         stateRef.current = Hidden
         tooltip->HoverTooltip.hide
       }, 200)
@@ -453,7 +453,7 @@ module GutterMarker = {
     }
 
     let (row, col) = rowCol
-    marker->setId(`gutter-marker_${row->Belt.Int.toString}-${col->Belt.Int.toString}`)
+    marker->setId(`gutter-marker_${row->Int.toString}-${col->Int.toString}`)
     marker->setClassName(
       "flex items-center justify-center text-14 text-center ml-1 h-6 font-bold hover:cursor-pointer " ++
       colorClass,
@@ -465,17 +465,17 @@ module GutterMarker = {
 }
 
 let _clearMarks = (state: state): unit => {
-  Belt.Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
+  Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
   state.marked = []
 }
 
 let extractRowColFromId = (id: string): option<(int, int)> =>
-  switch Js.String2.split(id, "_") {
+  switch String.split(id, "_") {
   | [_, rowColStr] =>
-    switch Js.String2.split(rowColStr, "-") {
+    switch String.split(rowColStr, "-") {
     | [rowStr, colStr] =>
-      let row = Belt.Int.fromString(rowStr)
-      let col = Belt.Int.fromString(colStr)
+      let row = Int.fromString(rowStr)
+      let col = Int.fromString(colStr)
       switch (row, col) {
       | (Some(row), Some(col)) => Some((row, col))
       | _ => None
@@ -492,15 +492,15 @@ module ErrorHash = Belt.Id.MakeHashableU({
 })
 
 let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm: CM.t, errors) => {
-  Belt.Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
+  Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
 
-  let errorsMap = Belt.HashMap.make(~hintSize=Belt.Array.length(errors), ~id=module(ErrorHash))
+  let errorsMap = Belt.HashMap.make(~hintSize=Array.length(errors), ~id=module(ErrorHash))
   state.marked = []
   cm->CM.clearGutter(CM.errorGutterId)
 
   let wrapper = cm->CM.getWrapperElement
 
-  Belt.Array.forEachWithIndex(errors, (idx, e) => {
+  Array.forEachWithIndex(errors, (e, idx) => {
     open DomUtil
     open Error
 
@@ -530,22 +530,20 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
         CM.MarkTextOption.make(
           ~className="border-b border-dotted hover:cursor-pointer " ++ markTextColor,
           ~attributes=CM.MarkTextOption.Attr.make(
-            ~id="text-marker_" ++
-            (Belt.Int.toString(e.row) ++
-            ("-" ++ (Belt.Int.toString(e.column) ++ ""))),
+            ~id="text-marker_" ++ (Int.toString(e.row) ++ ("-" ++ (Int.toString(e.column) ++ ""))),
             (),
           ),
           (),
         ),
       )
-      ->Js.Array2.push(state.marked, _)
+      ->Array.push(state.marked, _)
       ->ignore
       ()
     }
   })
 
   let isMarkerId = id =>
-    Js.String2.startsWith(id, "gutter-marker") || Js.String2.startsWith(id, "text-marker")
+    String.startsWith(id, "gutter-marker") || String.startsWith(id, "text-marker")
 
   wrapper->DomUtil.setOnMouseOver(evt => {
     let target = DomUtil.Event.target(evt)
@@ -553,7 +551,7 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
     let id = DomUtil.getId(target)
     if isMarkerId(id) {
       switch extractRowColFromId(id) {
-      | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
+      | Some(rowCol) => Option.forEach(onMarkerFocus, cb => cb(rowCol))
       | None => ()
       }
     }
@@ -565,7 +563,7 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
     let id = DomUtil.getId(target)
     if isMarkerId(id) {
       switch extractRowColFromId(id) {
-      | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
+      | Some(rowCol) => Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
       | None => ()
       }
     }
@@ -592,7 +590,7 @@ let make = // props relevant for the react wrapper
   ~scrollbarStyle="native",
   ~lineWrapping=false,
 ): React.element => {
-  let inputElement = React.useRef(Js.Nullable.null)
+  let inputElement = React.useRef(Nullable.null)
   let cmRef: React.ref<option<CM.t>> = React.useRef(None)
   let cmStateRef = React.useRef({marked: [], hoverHints})
 
@@ -600,7 +598,7 @@ let make = // props relevant for the react wrapper
   let (onMouseOver, onMouseOut, onMouseMove) = useHoverTooltip(~cmStateRef, ~cmRef, ())
 
   React.useEffect(() =>
-    switch inputElement.current->Js.Nullable.toOption {
+    switch inputElement.current->Nullable.toOption {
     | Some(input) =>
       let options = {
         CM.Options.theme: "material",
@@ -614,15 +612,15 @@ let make = // props relevant for the react wrapper
       }
       let cm = CM.fromTextArea(input, options)
 
-      Belt.Option.forEach(minHeight, minHeight =>
+      Option.forEach(minHeight, minHeight =>
         cm->CM.getScrollerElement->DomUtil.setMinHeight(minHeight)
       )
 
-      Belt.Option.forEach(maxHeight, maxHeight =>
+      Option.forEach(maxHeight, maxHeight =>
         cm->CM.getScrollerElement->DomUtil.setMaxHeight(maxHeight)
       )
 
-      Belt.Option.forEach(onChange, onValueChange =>
+      Option.forEach(onChange, onValueChange =>
         cm->CM.onChange(instance => onValueChange(instance->CM.getValue))
       )
 
@@ -638,7 +636,7 @@ let make = // props relevant for the react wrapper
       cmRef.current = Some(cm)
 
       let cleanup = () => {
-        /* Js.log2("cleanup", options->CM.Options.mode); */
+        /* Console.log2("cleanup", options->CM.Options.mode); */
         CM.offMouseOver(wrapper, onMouseOver)
         CM.offMouseOut(wrapper, onMouseOut)
         CM.offMouseMove(wrapper, onMouseMove)
@@ -692,10 +690,10 @@ let make = // props relevant for the react wrapper
       so we need to make a single string that React's
       useEffect is able to act on for equality checks
  */
-  let errorsFingerprint = Belt.Array.map(errors, e => {
+  let errorsFingerprint = Array.map(errors, e => {
     let {Error.row: row, column} = e
-    `${row->Belt.Int.toString}-${column->Belt.Int.toString}`
-  })->Js.Array2.joinWith(";")
+    `${row->Int.toString}-${column->Int.toString}`
+  })->Array.join(";")
 
   React.useEffect(() => {
     let state = cmStateRef.current
@@ -710,7 +708,7 @@ let make = // props relevant for the react wrapper
   }, [errorsFingerprint])
 
   React.useEffect(() => {
-    let cm = Belt.Option.getExn(cmRef.current)
+    let cm = Option.getExn(cmRef.current)
     cm->CM.setMode(mode)
     None
   }, [mode])

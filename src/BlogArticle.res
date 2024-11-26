@@ -16,7 +16,8 @@
       builds are taking too long.  I think we will be fine for now.
   Link to NextJS discussion: https://github.com/zeit/next.js/discussions/11728#discussioncomment-3501
  */
-let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
+
+let middleDotSpacer = " " ++ (String.fromCharCode(183) ++ " ")
 
 module Params = {
   type t = {slug: string}
@@ -38,7 +39,7 @@ module AuthorBox = {
       <div className="w-10 h-10 bg-berry-40 block rounded-full mr-3"> authorImg </div>
       <div className="body-sm">
         <a
-          href={"https://twitter.com/" ++ author.twitter}
+          href={"https://x.com/" ++ author.xHandle}
           className="hover:text-gray-80"
           rel="noopener noreferrer">
           {React.string(author.fullname)}
@@ -62,7 +63,7 @@ module BlogHeader = {
   ) => {
     let date = DateStr.toDate(date)
 
-    let authors = Belt.Array.concat([author], co_authors)
+    let authors = Array.concat([author], co_authors)
 
     <div className="flex flex-col items-center">
       <div className="w-full max-w-740">
@@ -78,7 +79,7 @@ module BlogHeader = {
           {React.string(Util.Date.toDayMonthYear(date))}
         </div>
         <h1 className="hl-title"> {React.string(title)} </h1>
-        {description->Belt.Option.mapWithDefault(React.null, desc =>
+        {description->Option.mapOr(React.null, desc =>
           switch desc {
           | "" => <div className="mb-8" />
           | desc =>
@@ -88,7 +89,7 @@ module BlogHeader = {
           }
         )}
         <div className="flex flex-col md:flex-row mb-12">
-          {Belt.Array.map(authors, author =>
+          {Array.map(authors, author =>
             <div
               key=author.username
               style={ReactDOMStyle.make(~minWidth="8.1875rem", ())}
@@ -151,8 +152,8 @@ let default = (props: props) => {
       <Meta
         siteName="ReScript Blog"
         title={title ++ " | ReScript Blog"}
-        description=?{description->Js.Null.toOption}
-        ogImage={previewImg->Js.Null.toOption->Belt.Option.getWithDefault(Blog.defaultPreviewImg)}
+        description=?{description->Null.toOption}
+        ogImage={previewImg->Null.toOption->Option.getOr(Blog.defaultPreviewImg)}
       />
       <div className="mb-10 md:mb-20">
         <BlogHeader
@@ -160,8 +161,8 @@ let default = (props: props) => {
           author
           co_authors
           title
-          description={description->Js.Null.toOption}
-          articleImg={articleImg->Js.Null.toOption}
+          description={description->Null.toOption}
+          articleImg={articleImg->Null.toOption}
         />
       </div>
       <div className="flex justify-center">
@@ -206,7 +207,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
   open Next.GetStaticProps
   let {params} = ctx
 
-  let path = switch BlogApi.getAllPosts()->Js.Array2.find(({path}) =>
+  let path = switch BlogApi.getAllPosts()->Array.find(({path}) =>
     BlogApi.blogPathToSlug(path) == params.slug
   ) {
   | None => params.slug
@@ -215,7 +216,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 
   let filePath = Node.Path.resolve("_blogposts", path)
 
-  let isArchived = Js.String2.startsWith(path, "archive/")
+  let isArchived = String.startsWith(path, "archive/")
 
   let source = filePath->Node.Fs.readFileSync
 
@@ -232,7 +233,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 let getStaticPaths: Next.GetStaticPaths.t<Params.t> = async () => {
   open Next.GetStaticPaths
 
-  let paths = BlogApi.getAllPosts()->Belt.Array.map(postData => {
+  let paths = BlogApi.getAllPosts()->Array.map(postData => {
     params: {
       Params.slug: BlogApi.blogPathToSlug(postData.path),
     },

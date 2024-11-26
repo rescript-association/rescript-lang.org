@@ -23,7 +23,7 @@ module Cite = {
       className="my-10 border-l-2 border-fire font-normal pl-10 py-1 text-fire"
       style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
       <blockquote className="text-32 italic mb-2"> children </blockquote>
-      {Belt.Option.mapWithDefault(author, React.null, author =>
+      {Option.mapOr(author, React.null, author =>
         <figcaption className="font-semibold text-14"> {React.string(author)} </figcaption>
       )}
     </div>
@@ -62,7 +62,7 @@ module UrlBox = {
       </p>
     | Array(arr) =>
       // Scenario: Take the first element, rewrap its children with the hyperlink img
-      let length = Belt.Array.length(arr)
+      let length = Array.length(arr)
       if length >= 1 {
         let head = Belt.Array.getExn(arr, 0)
         let headChildren = head->getMdxChildren
@@ -73,7 +73,7 @@ module UrlBox = {
             {headChildren->toReactElement}
           </P>
           {if length > 1 {
-            arr->Js.Array2.slice(~start=1, ~end_=length)->Mdx.arrToReactElement
+            arr->Array.slice(~start=1, ~end=length)->Mdx.arrToReactElement
           } else {
             React.null
           }}
@@ -82,7 +82,7 @@ module UrlBox = {
         React.null
       }
     | Unknown(el) =>
-      Js.log2("Received unknown", el)
+      Console.log2("Received unknown", el)
       React.null
     }
 
@@ -136,7 +136,7 @@ module H2 = {
   @react.component
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
-    <h2 id className="group mt-16 mb-3 hl-3">
+    <h2 id className="group mt-16 mb-3 hl-3 scroll-mt-24">
       children
       <span className="ml-2">
         <Anchor id />
@@ -148,7 +148,7 @@ module H2 = {
 module H3 = {
   @react.component
   let make = (~id, ~children) =>
-    <h3 id className="group mt-8 mb-4 hl-4">
+    <h3 id className="group mt-8 mb-4 hl-4 scroll-mt-24">
       children
       <span className="ml-2">
         <Anchor id />
@@ -159,7 +159,7 @@ module H3 = {
 module H4 = {
   @react.component
   let make = (~id, ~children) =>
-    <h4 id className="group mt-8 hl-5">
+    <h4 id className="group mt-8 hl-5 scroll-mt-24">
       children
       <span className="ml-2">
         <Anchor id />
@@ -231,26 +231,26 @@ module Code = {
   external unknownAsString: unknown => string = "%identity"
 
   let parseNumericRangeMeta = (metastring: string) =>
-    Js.String2.split(metastring, " ")
-    ->Js.Array2.find(s => Js.String2.startsWith(s, "{") && Js.String2.endsWith(s, "}"))
-    ->Belt.Option.map(str => {
-      let nums = Js.String2.replaceByRe(str, %re("/[\{\}]/g"), "")->parseNumericRange
+    String.split(metastring, " ")
+    ->Array.find(s => String.startsWith(s, "{") && String.endsWith(s, "}"))
+    ->Option.map(str => {
+      let nums = String.replaceRegExp(str, %re("/[\{\}]/g"), "")->parseNumericRange
       nums
     })
-    ->Belt.Option.getWithDefault([])
+    ->Option.getOr([])
 
   let makeCodeElement = (~code, ~metastring, ~lang) => {
     let baseClass = "md-code font-mono w-full block mt-5 mb-5"
     let codeElement = switch metastring {
     | None => <CodeExample code lang />
     | Some(metastring) =>
-      let metaSplits = Js.String2.split(metastring, " ")->Belt.List.fromArray
+      let metaSplits = String.split(metastring, " ")->List.fromArray
 
       let highlightedLines = parseNumericRangeMeta(metastring)
 
-      if Belt.List.has(metaSplits, "example", \"=") {
+      if List.has(metaSplits, "example", \"=") {
         <CodeExample code lang />
-      } else if Belt.List.has(metaSplits, "sig", \"=") {
+      } else if List.has(metaSplits, "sig", \"=") {
         <CodeExample code lang showLabel=false />
       } else {
         <CodeExample highlightedLines code lang />
@@ -265,7 +265,7 @@ module Code = {
     let lang = switch className {
     | None => "text"
     | Some(str) =>
-      switch Js.String2.split(str, "-") {
+      switch String.split(str, "-") {
       | ["language", ""] => "text"
       | ["language", lang] => lang
       | _ => "text"
@@ -273,7 +273,7 @@ module Code = {
     }
 
     let code = children->unknownAsString
-    let isMultiline = code->Js.String2.includes("\n")
+    let isMultiline = code->String.includes("\n")
 
     switch lang {
     | "text" if !isMultiline => <InlineCode> {code->React.string} </InlineCode>
@@ -297,29 +297,29 @@ module CodeTab = {
     | _ => []
     }
 
-    let tabs = Belt.Array.reduceWithIndex(mdxElements, [], (acc, mdxElement, i) => {
+    let tabs = Array.reduceWithIndex(mdxElements, [], (acc, mdxElement, i) => {
       let child = mdxElement->Mdx.MdxChildren.getMdxChildren->Mdx.MdxChildren.classify
 
       switch child {
       | Element(codeEl) =>
-        let className = Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("")
+        let className = Mdx.getMdxClassName(codeEl)->Option.getOr("")
 
-        let metastring = getMdxMetastring(codeEl)->Belt.Option.getWithDefault("")
+        let metastring = getMdxMetastring(codeEl)->Option.getOr("")
 
-        let lang = switch Js.String2.split(className, "-") {
+        let lang = switch String.split(className, "-") {
         | ["language", lang] => Some(lang)
         | _ => None
         }
 
-        let code = Js.String2.make(Mdx.MdxChildren.getMdxChildren(codeEl))
-        let label = Belt.Array.get(labels, i)
+        let code = String.make(Mdx.MdxChildren.getMdxChildren(codeEl))
+        let label = labels[i]
         let tab = {
           CodeExample.Toggle.lang,
           code,
           label,
           highlightedLines: Some(Code.parseNumericRangeMeta(metastring)),
         }
-        Js.Array2.push(acc, tab)->ignore
+        Array.push(acc, tab)->ignore
 
       | _ => ()
       }
@@ -375,16 +375,12 @@ module A = {
       // but it's very unlikely we'd refer to an absolute URL ending
       // with .md
       let regex = %re("/\.md(x)?|\.html$/")
-      let href = switch Js.String2.split(href, "#") {
-      | [pathname, anchor] => Js.String2.replaceByRe(pathname, regex, "") ++ ("#" ++ anchor)
-      | [pathname] => Js.String2.replaceByRe(pathname, regex, "")
+      let href = switch String.split(href, "#") {
+      | [pathname, anchor] => String.replaceRegExp(pathname, regex, "") ++ ("#" ++ anchor)
+      | [pathname] => String.replaceRegExp(pathname, regex, "")
       | _ => href
       }
-      <Next.Link
-        href
-        hrefRel="noopener noreferrer"
-        className="no-underline text-fire hover:underline"
-        ?target>
+      <Next.Link href className="no-underline text-fire hover:underline" ?target>
         children
       </Next.Link>
     }
@@ -421,11 +417,10 @@ module Li = {
     let elements: React.element = if isArray(children) {
       let arr = children->asArray
       let last: React.element = {
-        open Belt.Array
-        arr->getExn(arr->length - 1)
+        arr->Belt.Array.getExn(arr->Array.length - 1)
       }
 
-      let head = Js.Array2.slice(arr, ~start=0, ~end_=arr->Belt.Array.length - 1)
+      let head = Array.slice(arr, ~start=0, ~end=arr->Array.length - 1)
 
       let first = Belt.Array.getExn(head, 0)
 

@@ -16,7 +16,7 @@ let default = () => {
     "bg-fire-50",
     "bg-fire-30",
     "bg-fire-10",
-  ]->Js.Array2.map(bgColorClass => {
+  ]->Array.map(bgColorClass => {
     <ColorSquare className=bgColorClass />
   })
 

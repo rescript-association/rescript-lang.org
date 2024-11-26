@@ -21,7 +21,12 @@ let ecosystem = [
   ("Package Index", "/packages"),
   ("rescript-react", "/docs/react/latest/introduction"),
   ("GenType", "/docs/manual/latest/typescript-integration"),
-  ("Reanalyze", "https://github.com/rescript-association/reanalyze"),
+  ("Reanalyze", "https://github.com/rescript-lang/reanalyze"),
 ]
 
 let tools = [("Syntax Lookup", "/syntax-lookup")]
+
+let githubHref = "https://github.com/rescript-lang/rescript"
+let xHref = "https://x.com/rescriptlang"
+let blueSkyHref = "https://bsky.app/profile/rescript-lang.org"
+let discourseHref = "https://forum.rescript-lang.org"

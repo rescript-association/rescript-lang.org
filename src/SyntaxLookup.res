@@ -13,7 +13,7 @@ module Category = {
     | Decorators => "Decorators"
     | Operators => "Operators"
     | ExtensionPoints => "Extension Points"
-    | BuiltInFunctions => "Built In Functions"
+    | BuiltInFunctions => "Built-In Functions"
     | LanguageConstructs => "Language Constructs"
     | SpecialValues => "Special Values"
     | Other => "Other"
@@ -42,15 +42,43 @@ module Category = {
   }
 }
 
-// The data representing a syntax construct
-// handled in the widget
-type item = {
-  id: string,
-  keywords: array<string>,
-  name: string,
-  summary: string,
-  category: Category.t,
-  children: React.element,
+module Status = {
+  type t =
+    | Active
+    | Deprecated
+
+  let fromString = (s: string): t =>
+    switch s {
+    | "deprecated" => Deprecated
+    | "active" | _ => Active
+    }
+
+  let compare = (a, b) =>
+    switch (a, b) {
+    | (Deprecated, Deprecated) | (Active, Active) => Ordering.equal
+    | (Active, Deprecated) => Ordering.less
+    | (Deprecated, Active) => Ordering.greater
+    }
+}
+
+module Item = {
+  // The data representing a syntax construct
+  // handled in the widget
+  type t = {
+    id: string,
+    keywords: array<string>,
+    name: string,
+    summary: string,
+    category: Category.t,
+    children: React.element,
+    status: Status.t,
+  }
+
+  let compare = (a, b) =>
+    switch Status.compare(a.status, b.status) {
+    | 0. => String.compare(a.name, b.name)
+    | x => x
+    }
 }
 
 type itemInfo = {
@@ -59,10 +87,11 @@ type itemInfo = {
   name: string,
   summary: string,
   category: Category.t,
+  status: Status.t,
 }
 
 let getAnchor = path => {
-  switch Js.String2.split(path, "#") {
+  switch String.split(path, "#") {
   | [_, anchor] => Some(anchor)
   | _ => None
   }
@@ -70,8 +99,13 @@ let getAnchor = path => {
 
 module Tag = {
   @react.component
-  let make = (~text: string) => {
-    <span className="hover:bg-fire hover:text-white bg-fire-5 py-1 px-3 rounded text-fire text-16">
+  let make = (~deprecated: bool, ~text: string) => {
+    <span
+      className={`
+       py-1 px-3 rounded text-16
+      ${deprecated
+          ? "hover:bg-gray-30 bg-gray-50 text-gray-80 line-through"
+          : "hover:bg-fire hover:text-white bg-fire-5 text-fire"}`}>
       {React.string(text)}
     </span>
   }
@@ -80,7 +114,7 @@ module Tag = {
 module DetailBox = {
   @react.component
   let make = (~summary: string, ~children: React.element) => {
-    let summaryEl = switch Js.String2.split(summary, "`") {
+    let summaryEl = switch String.split(summary, "`") {
     | [] => React.null
     | [first, second, third] =>
       [
@@ -88,11 +122,11 @@ module DetailBox = {
         <span className="text-fire"> {React.string(second)} </span>,
         React.string(third),
       ]
-      ->Belt.Array.mapWithIndex((i, el) => {
-        <span key={Belt.Int.toString(i)}> el </span>
+      ->Array.mapWithIndex((el, i) => {
+        <span key={Int.toString(i)}> el </span>
       })
       ->React.array
-    | more => Belt.Array.map(more, s => React.string(s))->React.array
+    | more => Array.map(more, s => React.string(s))->React.array
     }
 
     <div>
@@ -104,8 +138,8 @@ module DetailBox = {
 
 type state =
   | ShowAll
-  | ShowFiltered(string, array<item>) // (search, filteredItems)
-  | ShowDetails(item)
+  | ShowFiltered(string, array<Item.t>) // (search, filteredItems)
+  | ShowDetails(Item.t)
 
 @val @scope("window")
 external scrollTo: (int, int) => unit = "scrollTo"
@@ -115,13 +149,17 @@ let scrollToTop = () => scrollTo(0, 0)
 type props = {mdxSources: array<MdxRemote.output>}
 type params = {slug: string}
 
-let decode = (json: Js.Json.t) => {
+let decode = (json: JSON.t) => {
   open Json.Decode
   let id = json->(field("id", string, _))
   let keywords = json->(field("keywords", array(string, ...), _))
   let name = json->(field("name", string, _))
   let summary = json->(field("summary", string, _))
   let category = json->field("category", string, _)->Category.fromString
+  let status =
+    json
+    ->optional(field("status", string, _), _)
+    ->Option.mapOr(Status.Active, Status.fromString)
 
   {
     id,
@@ -129,14 +167,15 @@ let decode = (json: Js.Json.t) => {
     name,
     summary,
     category,
+    status,
   }
 }
 
 let default = (props: props) => {
   let {mdxSources} = props
 
-  let allItems = mdxSources->Js.Array2.map(mdxSource => {
-    let {id, keywords, category, summary, name} = decode(mdxSource.frontmatter)
+  let allItems = mdxSources->Array.map(mdxSource => {
+    let {id, keywords, category, summary, name, status} = decode(mdxSource.frontmatter)
 
     let children =
       <MdxRemote
@@ -146,7 +185,7 @@ let default = (props: props) => {
         components={MarkdownComponents.default}
       />
 
-    {id, keywords, category, summary, name, children}
+    {Item.id, keywords, category, summary, name, status, children}
   })
 
   let fuseOpts = Fuse.Options.t(
@@ -160,19 +199,19 @@ let default = (props: props) => {
     (),
   )
 
-  let fuse: Fuse.t<item> = Fuse.make(allItems, fuseOpts)
+  let fuse: Fuse.t<Item.t> = Fuse.make(allItems, fuseOpts)
 
   let router = Next.Router.useRouter()
   let (state, setState) = React.useState(_ => ShowAll)
 
-  let findItemById = id => allItems->Js.Array2.find(item => item.id === id)
+  let findItemById = id => allItems->Array.find(item => item.id === id)
 
-  let findItemByExactName = name => allItems->Js.Array2.find(item => item.name === name)
+  let findItemByExactName = name => allItems->Array.find(item => item.name === name)
 
   let searchItems = value =>
     fuse
     ->Fuse.search(value)
-    ->Belt.Array.map(m => {
+    ->Array.map(m => {
       m["item"]
     })
 
@@ -241,7 +280,7 @@ let default = (props: props) => {
       ExtensionPoints,
       SpecialValues,
       Other,
-    ]->Belt.Array.map(cat => {
+    ]->Array.map(cat => {
       (cat->Category.toString, [])
     })
 
@@ -251,34 +290,37 @@ let default = (props: props) => {
     | ShowFiltered(_, items) => items
     }
 
-    Belt.Array.reduce(items, Js.Dict.fromArray(initial), (acc, item) => {
+    Array.reduce(items, Dict.fromArray(initial), (acc, item) => {
       let key = item.category->Category.toString
-      Js.Dict.get(acc, key)->Belt.Option.mapWithDefault(acc, items => {
-        Js.Array2.push(items, item)->ignore
-        Js.Dict.set(acc, key, items)
+      Dict.get(acc, key)->Option.mapOr(acc, items => {
+        Array.push(items, item)->ignore
+        Dict.set(acc, key, items)
         acc
       })
     })
-    ->Js.Dict.entries
-    ->Belt.Array.reduce([], (acc, entry) => {
+    ->Dict.toArray
+    ->Array.reduce([], (acc, entry) => {
       let (title, items) = entry
-      if Js.Array.length(items) === 0 {
+      if Array.length(items) === 0 {
         acc
       } else {
-        let children = Belt.Array.map(items, item => {
-          let onMouseDown = evt => {
-            ReactEvent.Mouse.preventDefault(evt)
-            onSearchValueChange(item.name)
-          }
-          <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
-            <Tag text={item.name} />
-          </span>
-        })
+        let children =
+          items
+          ->Array.toSorted(Item.compare)
+          ->Array.map(item => {
+            let onMouseDown = evt => {
+              ReactEvent.Mouse.preventDefault(evt)
+              onSearchValueChange(item.name)
+            }
+            <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
+              <Tag text={item.name} deprecated={item.status == Deprecated} />
+            </span>
+          })
         let el =
           <div key=title className="first:mt-0 mt-12">
             <Category title> {React.array(children)} </Category>
           </div>
-        Js.Array2.push(acc, el)->ignore
+        Array.push(acc, el)->ignore
         acc
       }
     })
@@ -294,7 +336,7 @@ let default = (props: props) => {
     onSearchValueChange("")
   }
 
-  let overlayState = React.useState(() => false)
+  let (isOverlayOpen, setOverlayOpen) = React.useState(() => false)
   let title = "Syntax Lookup | ReScript Documentation"
 
   let content =
@@ -309,7 +351,7 @@ let default = (props: props) => {
         <div className="w-full" style={ReactDOM.Style.make(~maxWidth="34rem", ())}>
           <SearchBox
             placeholder="Enter keywords or syntax..."
-            completionValues={Belt.Array.map(completionItems, item => item.name)}
+            completionValues={Array.map(completionItems, item => item.name)}
             value=searchValue
             onClear=onSearchClear
             onValueChange=onSearchValueChange
@@ -330,7 +372,7 @@ let default = (props: props) => {
     />
     <div className="mt-4 xs:mt-16">
       <div className="text-gray-80">
-        <Navigation overlayState />
+        <Navigation isOverlayOpen setOverlayOpen />
         <div className="flex xs:justify-center overflow-hidden pb-48">
           <main className="mt-16 min-w-320 lg:align-center w-full px-4 md:px-8 max-w-1280">
             <MdxProvider components=MarkdownComponents.default>
@@ -349,7 +391,7 @@ let default = (props: props) => {
 let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let dir = Node.Path.resolve("misc_docs", "syntax")
 
-  let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
+  let allFiles = Node.Fs.readdirSync(dir)->Array.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
     let source = fullPath->Node.Fs.readFileSync
     await MdxRemote.serialize(
@@ -358,7 +400,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
     )
   })
 
-  let mdxSources = await Js.Promise2.all(allFiles)
+  let mdxSources = await Promise.all(allFiles)
 
   {"props": {mdxSources: mdxSources}}
 }

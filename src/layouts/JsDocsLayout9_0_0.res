@@ -1,6 +1,6 @@
 // Structure defined by `scripts/extract-indices.js`
 @module("index_data/v900_js_api_index.json")
-external indexData: Js.Dict.t<{
+external indexData: Dict.t<{
   "moduleName": string,
   "headers": array<{
     "name": string,
@@ -159,17 +159,15 @@ module Docs = {
 
     // Gather data for the CollapsibleSection
     let headers = {
-      open Belt.Option
-      Js.Dict.get(indexData, route)
-      ->map(data =>
-        data["headers"]->Belt.Array.map(header => (header["name"], "#" ++ header["href"]))
-      )
-      ->getWithDefault([])
+      open Option
+      Dict.get(indexData, route)
+      ->map(data => data["headers"]->Array.map(header => (header["name"], "#" ++ header["href"])))
+      ->getOr([])
     }
 
     let moduleName = {
-      open Belt.Option
-      Js.Dict.get(indexData, route)->map(data => data["moduleName"])->getWithDefault("?")
+      open Option
+      Dict.get(indexData, route)->map(data => data["moduleName"])->getOr("?")
     }
 
     let url = route->Url.parse
@@ -190,7 +188,7 @@ module Docs = {
       open SidebarLayout.Toc
       {
         title: moduleName,
-        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href}),
+        entries: Array.map(headers, ((name, href)) => {header: name, href}),
       }
     }
 

@@ -6,9 +6,36 @@ canonical: "/docs/manual/latest/exception"
 
 # Exception
 
-Exceptions are just a special kind of variant, thrown in **exceptional** cases (don't abuse them!).
+Exceptions are just a special kind of variant, thrown in **exceptional** cases (don't abuse them!). Consider using the [`option`](null-undefined-option.mdx) or [`result`](api/core/result) type for recoverable errors.
 
-## Usage
+You can create your own exceptions like you'd make a variant (exceptions need to be capitalized too).
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+exception InputClosed(string)
+// later on
+raise(InputClosed("The stream has closed!"))
+```
+```js
+import * as Caml_exceptions from "./stdlib/caml_exceptions.js";
+
+var InputClosed = /* @__PURE__ */Caml_exceptions.create("Playground.InputClosed");
+
+throw {
+      RE_EXN_ID: InputClosed,
+      _1: "The stream has closed!",
+      Error: new Error()
+    };
+```
+
+</CodeTab>
+
+## Built-in Exceptions
+
+ReScript has some built-in exceptions:
+
+### `Not_found`
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -29,16 +56,16 @@ let result =
   }
 ```
 ```js
-var Caml_js_exceptions = require("./stdlib/caml_js_exceptions.js");
+import * as Caml_js_exceptions from "./stdlib/caml_js_exceptions.js";
 
 function getItem(item) {
   if (item === 3) {
     return 1;
   }
   throw {
-    RE_EXN_ID: "Not_found",
-    Error: new Error()
-  };
+        RE_EXN_ID: "Not_found",
+        Error: new Error()
+      };
 }
 
 var result;
@@ -71,17 +98,15 @@ switch list{1, 2, 3}->List.getExn(4) {
 }
 ```
 ```js
-var List = require("./stdlib/list.js");
-var Caml_js_exceptions = require("./stdlib/caml_js_exceptions.js");
+import * as Core__List from "./stdlib/core__List.js";
+import * as Caml_js_exceptions from "./stdlib/caml_js_exceptions.js";
 
 var exit = 0;
 
 var item;
 
 try {
-  item = List.find((function (i) {
-          return i === 4;
-        }), {
+  item = Core__List.getExn({
         hd: 1,
         tl: {
           hd: 2,
@@ -90,7 +115,7 @@ try {
             tl: /* [] */0
           }
         }
-      });
+      }, 4);
   exit = 1;
 }
 catch (raw_exn){
@@ -109,32 +134,241 @@ if (exit === 1) {
 
 </CodeTab>
 
-You can also make your own exceptions like you'd make a variant (exceptions need to be capitalized too).
+### `Invalid_argument`
+
+Used to check if argument is valid. This exception takes a string.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```res example
+let divide = (a, b) =>
+  if b == 0 {
+    raise(Invalid_argument("Denominator is zero"))
+  } else {
+    a / b
+  }
+
+// catch error
+try divide(2, 0)->Console.log catch {
+| Invalid_argument(msg) => Console.log(msg) // Denominator is zero
+}
+```
+
+```js
+import * as Caml_int32 from "./stdlib/caml_int32.js";
+import * as Caml_js_exceptions from "./stdlib/caml_js_exceptions.js";
+
+function divide(a, b) {
+  if (b === 0) {
+    throw {
+          RE_EXN_ID: "Invalid_argument",
+          _1: "Denominator is zero",
+          Error: new Error()
+        };
+  }
+  return Caml_int32.div(a, b);
+}
+
+try {
+  console.log(divide(2, 0));
+}
+catch (raw_msg){
+  var msg = Caml_js_exceptions.internalToOCamlException(raw_msg);
+  if (msg.RE_EXN_ID === "Invalid_argument") {
+    console.log(msg._1);
+  } else {
+    throw msg;
+  }
+}
+```
+
+</CodeTab>
+
+### `Assert_failure`
+
+Raise when you use `assert(condition)` and `condition` is false. The arguments
+are the location of the `assert` in the source code (file name, line number, column number).
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-exception InputClosed(string)
-// later on
-raise(InputClosed("The stream has closed!"))
+let decodeUser = (json: JSON.t) =>
+  switch json {
+  | Object(userDict) =>
+    switch (userDict->Dict.get("name"), userDict->Dict.get("age")) {
+    | (Some(String(name)), Some(Number(age))) => (name, age->Float.toInt)
+    | _ => assert(false)
+    }
+  | _ => assert(false)
+  }
+
+
+try decodeUser(%raw("{}"))->Console.log catch {
+| Assert_failure(loc) => Console.log(loc) // ("filename", line, col)
+}
 ```
+
 ```js
-var Caml_exceptions = require("./stdlib/caml_exceptions.js");
+mport * as Caml_js_exceptions from "./stdlib/caml_js_exceptions.js";
 
-var InputClosed = Caml_exceptions.create("MyFile.InputClosed");
+function decodeUser(json) {
+  if (!Array.isArray(json) && (json === null || typeof json !== "object") && typeof json !== "number" && typeof json !== "string" && typeof json !== "boolean") {
+    throw {
+          RE_EXN_ID: "Assert_failure",
+          _1: [
+            "playground.res",
+            8,
+            9
+          ],
+          Error: new Error()
+        };
+  }
+  if (typeof json === "object" && !Array.isArray(json)) {
+    var match = json["name"];
+    var match$1 = json["age"];
+    if (match !== undefined && !(!Array.isArray(match) && (match === null || typeof match !== "object") && typeof match !== "number" && typeof match !== "string" && typeof match !== "boolean") && typeof match === "string" && match$1 !== undefined && !(!Array.isArray(match$1) && (match$1 === null || typeof match$1 !== "object") && typeof match$1 !== "number" && typeof match$1 !== "string" && typeof match$1 !== "boolean") && typeof match$1 === "number") {
+      return [
+              match,
+              match$1 | 0
+            ];
+    }
+    throw {
+          RE_EXN_ID: "Assert_failure",
+          _1: [
+            "playground.res",
+            6,
+            11
+          ],
+          Error: new Error()
+        };
+  }
+  throw {
+        RE_EXN_ID: "Assert_failure",
+        _1: [
+          "playground.res",
+          8,
+          9
+        ],
+        Error: new Error()
+      };
+}
 
-throw {
-  RE_EXN_ID: InputClosed,
-  _1: "The stream has closed!",
-  Error: new Error()
-};
+try {
+  console.log(decodeUser({}));
+}
+catch (raw_loc){
+  var loc = Caml_js_exceptions.internalToOCamlException(raw_loc);
+  if (loc.RE_EXN_ID === "Assert_failure") {
+    console.log(loc._1);
+  } else {
+    throw loc;
+  }
+}
+```
+
+</CodeTab>
+
+### `Failure`
+
+Exception raised to signal that the given arguments do not make sense. This
+exception takes a string as an argument.
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```res example
+let isValidEmail = email => {
+  let hasAtSign = String.includes(email, "@")
+  let hasDot = String.includes(email, ".")
+  if !(hasAtSign && hasDot) {
+    raise(Failure("Invalid email address"))
+  } else {
+    true
+  }
+}
+
+
+let isValid = try isValidEmail("rescript.org") catch {
+| Failure(msg) => {
+    Console.error(msg)
+    false
+  }
+}
+```
+
+```js
+import * as Caml_js_exceptions from "./stdlib/caml_js_exceptions.js";
+
+function isValidEmail(email) {
+  var hasAtSign = email.includes("@");
+  var hasDot = email.includes(".");
+  if (hasAtSign && hasDot) {
+    return true;
+  }
+  throw {
+        RE_EXN_ID: "Failure",
+        _1: "Invalid email address",
+        Error: new Error()
+      };
+}
+
+var isValid;
+
+try {
+  isValid = isValidEmail("rescript.org");
+}
+catch (raw_msg){
+  var msg = Caml_js_exceptions.internalToOCamlException(raw_msg);
+  if (msg.RE_EXN_ID === "Failure") {
+    console.error(msg._1);
+    isValid = false;
+  } else {
+    throw msg;
+  }
+}
+```
+
+</CodeTab>
+
+### `Division_by_zero`
+
+Exception raised by integer division and remainder operations when their second argument is zero.
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```res example
+// ReScript raise `Division_by_zero` if the denominator is zero
+let result = try Some(10 / 0) catch {
+| Division_by_zero => None
+}
+
+Console.log(result) // None
+```
+
+```js
+import * as Caml_int32 from "./stdlib/caml_int32.js";
+import * as Caml_js_exceptions from "./stdlib/caml_js_exceptions.js";
+
+var result;
+
+try {
+  result = Caml_int32.div(10, 0);
+}
+catch (raw_exn){
+  var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+  if (exn.RE_EXN_ID === "Division_by_zero") {
+    result = undefined;
+  } else {
+    throw exn;
+  }
+}
+
+console.log(result);
 ```
 
 </CodeTab>
 
 ## Catching JS Exceptions
 
-To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Js.Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
+To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
 
 
 Throw an exception from JS:
@@ -158,25 +392,25 @@ try {
   // call the external method
   someJSFunctionThatThrows()
 } catch {
-| Js.Exn.Error(obj) =>
-  switch Js.Exn.message(obj) {
+| Exn.Error(obj) =>
+  switch Exn.message(obj) {
   | Some(m) => Console.log("Caught a JS exception! Message: " ++ m)
   | None => ()
   }
 }
 ```
 
-The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal operations. To operate on `obj`, do like the code above by using the standard library's [`Js.Exn`](api/js/exn) module's helpers.
+The `obj` here is of type `Exn.t`, intentionally opaque to disallow illegal operations. To operate on `obj`, do like the code above by using the standard library's [`Exn`](api/js/exn) module's helpers.
 
 ## Raise a JS Exception
 
-`raise(MyException)` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Js.Exn.raiseError`:
+`raise(MyException)` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Exn.raiseError`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 let myTest = () => {
-  Js.Exn.raiseError("Hello!")
+  Exn.raiseError("Hello!")
 }
 ```
 ```js
@@ -257,7 +491,7 @@ try {
 } catch {
 | Not_found => ... // catch a ReScript exception
 | Invalid_argument(_) => ... // catch a second ReScript exception
-| Js.Exn.Error(obj) => ... // catch the JS exception
+| Exn.Error(obj) => ... // catch the JS exception
 }
 ```
 

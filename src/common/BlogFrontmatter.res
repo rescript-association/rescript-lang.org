@@ -3,7 +3,7 @@ type author = {
   fullname: string,
   role: string,
   imgUrl: string,
-  twitter: string,
+  xHandle: string,
 }
 
 let authors = [
@@ -12,56 +12,56 @@ let authors = [
     fullname: "Hongbo Zhang",
     role: "Compiler & Build System",
     imgUrl: "https://pbs.twimg.com/profile_images/1369548222314598400/E2y46vrB_400x400.jpg",
-    twitter: "bobzhang1988",
+    xHandle: "bobzhang1988",
   },
   {
     username: "chenglou",
     fullname: "Cheng Lou",
     role: "Syntax & Tools",
     imgUrl: "https://pbs.twimg.com/profile_images/554199709909131265/Y5qUDaCB_400x400.jpeg",
-    twitter: "_chenglou",
+    xHandle: "_chenglou",
   },
   {
     username: "maxim",
     fullname: "Maxim Valcke",
     role: "Syntax Lead",
     imgUrl: "https://pbs.twimg.com/profile_images/970271048812974080/Xrr8Ob6J_400x400.jpg",
-    twitter: "_binary_search",
+    xHandle: "_binary_search",
   },
   {
     username: "ryyppy",
     fullname: "Patrick Ecker",
     role: "Documentation",
     imgUrl: "https://pbs.twimg.com/profile_images/1388426717006544897/B_a7D4GF_400x400.jpg",
-    twitter: "ryyppy",
+    xHandle: "ryyppy",
   },
   {
     username: "rickyvetter",
     fullname: "Ricky Vetter",
     role: "ReScript & React",
     imgUrl: "https://pbs.twimg.com/profile_images/541111032207273984/DGsZmmfr_400x400.jpeg",
-    twitter: "rickyvetter",
+    xHandle: "rickyvetter",
   },
   {
     username: "made_by_betty",
     fullname: "Bettina Steinbrecher",
     role: "Brand / UI / UX",
     imgUrl: "https://pbs.twimg.com/profile_images/1366785342704136195/3IGyRhV1_400x400.jpg",
-    twitter: "made_by_betty",
+    xHandle: "made_by_betty",
   },
   {
     username: "rescript-team",
     fullname: "ReScript Team",
     role: "Core Development",
     imgUrl: "https://pbs.twimg.com/profile_images/1358354824660541440/YMKNWE1V_400x400.png",
-    twitter: "rescriptlang",
+    xHandle: "rescriptlang",
   },
   {
     username: "rescript-association",
     fullname: "ReScript Association",
     role: "Foundation",
     imgUrl: "https://pbs.twimg.com/profile_images/1045362176117100545/MioTQoTp_400x400.jpg",
-    twitter: "ReScriptAssoc",
+    xHandle: "ReScriptAssoc",
   },
 ]
 
@@ -85,15 +85,15 @@ type t = {
   author: author,
   co_authors: array<author>,
   date: DateStr.t,
-  previewImg: Js.null<string>,
-  articleImg: Js.null<string>,
+  previewImg: Null.t<string>,
+  articleImg: Null.t<string>,
   title: string,
-  badge: Js.null<Badge.t>,
-  description: Js.null<string>,
+  badge: Null.t<Badge.t>,
+  description: Null.t<string>,
 }
 
 let decodeBadge = (str: string): Badge.t =>
-  switch Js.String2.toLowerCase(str) {
+  switch String.toLowerCase(str) {
   | "release" => Release
   | "testing" => Testing
   | "preview" => Preview
@@ -104,7 +104,7 @@ let decodeBadge = (str: string): Badge.t =>
 exception AuthorNotFound(string)
 
 let decodeAuthor = (~fieldName: string, ~authors, username) =>
-  switch Js.Array2.find(authors, a => a.username === username) {
+  switch Array.find(authors, a => a.username === username) {
   | Some(author) => author
   | None => raise(AuthorNotFound(`Couldn't find author "${username}" in field ${fieldName}`))
   }
@@ -112,24 +112,24 @@ let decodeAuthor = (~fieldName: string, ~authors, username) =>
 let authorDecoder = (~fieldName: string, ~authors) => {
   open Json.Decode
 
-  let multiple = j => array(string, j)->Belt.Array.map(a => decodeAuthor(~fieldName, ~authors, a))
+  let multiple = j => array(string, j)->Array.map(a => decodeAuthor(~fieldName, ~authors, a))
 
   let single = j => [string(j)->decodeAuthor(~fieldName, ~authors)]
 
   either(single, multiple)
 }
 
-let decode = (json: Js.Json.t): result<t, string> => {
+let decode = (json: JSON.t): result<t, string> => {
   open Json.Decode
   switch {
     author: json->field("author", string, _)->decodeAuthor(~fieldName="author", ~authors),
     co_authors: json
     ->optional(field("co-authors", authorDecoder(~fieldName="co-authors", ~authors), ...), _)
-    ->Belt.Option.getWithDefault([]),
+    ->Option.getOr([]),
     date: json->field("date", string, _)->DateStr.fromString,
-    badge: json->optional(j => field("badge", string, j)->decodeBadge, _)->Js.Null.fromOption,
-    previewImg: json->optional(field("previewImg", string, ...), _)->Js.Null.fromOption,
-    articleImg: json->optional(field("articleImg", string, ...), _)->Js.Null.fromOption,
+    badge: json->optional(j => field("badge", string, j)->decodeBadge, _)->Null.fromOption,
+    previewImg: json->optional(field("previewImg", string, ...), _)->Null.fromOption,
+    articleImg: json->optional(field("articleImg", string, ...), _)->Null.fromOption,
     title: json->(field("title", string, _)),
     description: json->(nullable(field("description", string, ...), _)),
   } {

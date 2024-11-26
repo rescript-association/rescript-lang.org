@@ -109,7 +109,7 @@ let fetchData: string => promise<string> = async (userId: string): string {
 }
 ```
 
-**Note:** In a practical scenario you'd either use a type signature, or inline types, not both at the same time. In case you are interested in the design decisions, check out [this discussion](https://github.com/rescript-lang/rescript-compiler/pull/5913#issuecomment-1359003870).
+**Note:** In a practical scenario you'd either use a type signature, or inline types, not both at the same time. In case you are interested in the design decisions, check out [this discussion](https://github.com/rescript-lang/rescript/pull/5913#issuecomment-1359003870).
 
 ### Promises don't auto-collapse in async functions
 
@@ -130,15 +130,15 @@ You may use `try / catch` or `switch` to handle exceptions during async executio
 ```res
 // For simulation purposes
 let authenticate = async () => {
-  raise(Js.Exn.raiseRangeError("Authentication failed."))
+  raise(Exn.raiseRangeError("Authentication failed."))
 }
 
 let checkAuth = async () => {
   try {
     await authenticate()
   } catch {
-  | Js.Exn.Error(e) =>
-    switch Js.Exn.message(e) {
+  | Exn.Error(e) =>
+    switch Exn.message(e) {
     | Some(msg) => Console.log("JS error thrown: " ++ msg)
     | None => Console.log("Some other exception has been thrown")
     }
@@ -152,14 +152,14 @@ You may unify error and value handling in a single switch as well:
 
 ```res
 let authenticate = async () => {
-  raise(Js.Exn.raiseRangeError("Authentication failed."))
+  raise(Exn.raiseRangeError("Authentication failed."))
 }
 
 let checkAuth = async () => {
   switch await authenticate() {
   | _ => Console.log("ok")
-  | exception Js.Exn.Error(e) => 
-    switch Js.Exn.message(e) {
+  | exception Exn.Error(e) => 
+    switch Exn.message(e) {
     | Some(msg) => Console.log("JS error thrown: " ++ msg)
     | None => Console.log("Some other exception has been thrown")
     }

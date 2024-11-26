@@ -10,10 +10,10 @@ let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAu
     switch mode {
     | NoAuto => None
     | AutoFadeTransition(ms) =>
-      let timerId = Js.Global.setInterval(() => {
+      let timerId = setInterval(() => {
         setIndex(
           prev => {
-            if prev === imgSrcs->Belt.Array.length - 1 {
+            if prev === imgSrcs->Array.length - 1 {
               0
             } else {
               prev + 1
@@ -24,7 +24,7 @@ let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAu
 
       Some(
         () => {
-          Js.Global.clearInterval(timerId)
+          clearInterval(timerId)
         },
       )
     }
@@ -32,7 +32,7 @@ let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAu
 
   let src = imgSrcs->Belt.Array.getExn(index)
 
-  let lineEls = imgSrcs->Belt.Array.mapWithIndex((i, src) => {
+  let lineEls = imgSrcs->Array.mapWithIndex((src, i) => {
     let bgColor = if i === index {
       "bg-gray-40"
     } else {
@@ -52,7 +52,7 @@ let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAu
     ReactEvent.Mouse.preventDefault(evt)
 
     setIndex(prev => {
-      if prev === imgSrcs->Belt.Array.length - 1 {
+      if prev === imgSrcs->Array.length - 1 {
         0
       } else {
         prev + 1
