@@ -38,7 +38,10 @@ module AuthorBox = {
       <div className="w-10 h-10 bg-berry-40 block rounded-full mr-3"> authorImg </div>
       <div className="body-sm">
         <a
-          href={"https://twitter.com/" ++ author.twitter}
+          href={switch author.social {
+          | Twitter(handle) => "https://twitter.com/" ++ handle
+          | BlueSky(handle) => "https://bsky.app/profile/" ++ handle
+          }}
           className="hover:text-gray-80"
           rel="noopener noreferrer">
           {React.string(author.fullname)}
@@ -205,7 +208,7 @@ let default = (props: props) => {
 let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
   open Next.GetStaticProps
   let {params} = ctx
-
+  Js.Console.log(params)
   let path = switch BlogApi.getAllPosts()->Js.Array2.find(({path}) =>
     BlogApi.blogPathToSlug(path) == params.slug
   ) {

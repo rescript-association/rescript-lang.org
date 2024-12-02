@@ -1,9 +1,11 @@
+type social = Twitter(string) | BlueSky(string)
+
 type author = {
   username: string,
   fullname: string,
   role: string,
   imgUrl: string,
-  twitter: string,
+  social: social,
 }
 
 let authors = [
@@ -12,56 +14,63 @@ let authors = [
     fullname: "Hongbo Zhang",
     role: "Compiler & Build System",
     imgUrl: "https://pbs.twimg.com/profile_images/1369548222314598400/E2y46vrB_400x400.jpg",
-    twitter: "bobzhang1988",
+    social: Twitter("bobzhang1988"),
   },
   {
     username: "chenglou",
     fullname: "Cheng Lou",
     role: "Syntax & Tools",
     imgUrl: "https://pbs.twimg.com/profile_images/554199709909131265/Y5qUDaCB_400x400.jpeg",
-    twitter: "_chenglou",
+    social: Twitter("_chenglou"),
   },
   {
     username: "maxim",
     fullname: "Maxim Valcke",
     role: "Syntax Lead",
     imgUrl: "https://pbs.twimg.com/profile_images/970271048812974080/Xrr8Ob6J_400x400.jpg",
-    twitter: "_binary_search",
+    social: Twitter("_binary_search"),
   },
   {
     username: "ryyppy",
     fullname: "Patrick Ecker",
     role: "Documentation",
     imgUrl: "https://pbs.twimg.com/profile_images/1388426717006544897/B_a7D4GF_400x400.jpg",
-    twitter: "ryyppy",
+    social: Twitter("ryyppy"),
   },
   {
     username: "rickyvetter",
     fullname: "Ricky Vetter",
     role: "ReScript & React",
     imgUrl: "https://pbs.twimg.com/profile_images/541111032207273984/DGsZmmfr_400x400.jpeg",
-    twitter: "rickyvetter",
+    social: Twitter("rickyvetter"),
   },
   {
     username: "made_by_betty",
     fullname: "Bettina Steinbrecher",
     role: "Brand / UI / UX",
     imgUrl: "https://pbs.twimg.com/profile_images/1366785342704136195/3IGyRhV1_400x400.jpg",
-    twitter: "made_by_betty",
+    social: Twitter("made_by_betty"),
   },
   {
     username: "rescript-team",
     fullname: "ReScript Team",
     role: "Core Development",
     imgUrl: "https://pbs.twimg.com/profile_images/1358354824660541440/YMKNWE1V_400x400.png",
-    twitter: "rescriptlang",
+    social: Twitter("rescriptlang"),
   },
   {
     username: "rescript-association",
     fullname: "ReScript Association",
     role: "Foundation",
     imgUrl: "https://pbs.twimg.com/profile_images/1045362176117100545/MioTQoTp_400x400.jpg",
-    twitter: "ReScriptAssoc",
+    social: Twitter("ReScriptAssoc"),
+  },
+  {
+    username: "josh-derocher-vlk",
+    fullname: "Josh Derocher-Vlk",
+    role: "Community Member",
+    imgUrl: "https://cdn.bsky.app/img/avatar/plain/did:plc:erifxn5qcos2zrxvogse5y5s/bafkreif6v7lrtz24vi5ekumkiwg7n7js55coekszduwhjegfmdopd7tqmi@webp",
+    social: BlueSky("vlkpack.com"),
   },
 ]
 

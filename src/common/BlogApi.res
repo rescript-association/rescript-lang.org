@@ -39,7 +39,9 @@ type post = {
 }
 
 let blogPathToSlug = path => {
-  path->Js.String2.replaceByRe(%re(`/^(archive\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
+  path
+  ->Js.String2.replaceByRe(%re(`/^(archive\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
+  ->Js.String2.replaceByRe(%re(`/^(community\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
 }
 
 let mdxFiles = dir => {
@@ -49,6 +51,7 @@ let mdxFiles = dir => {
 let getAllPosts = () => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
   let archivedPostsDirectory = Node.Path.join2(postsDirectory, "archive")
+  let communityPostsDirectory = Node.Path.join2(postsDirectory, "community")
 
   let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
@@ -76,7 +79,23 @@ let getAllPosts = () => {
     }
   })
 
-  Js.Array2.concat(nonArchivedPosts, archivedPosts)->Js.Array2.sortInPlaceWith((a, b) => {
+  let communityPosts = mdxFiles(communityPostsDirectory)->Js.Array2.map(path => {
+    let {GrayMatter.data: data} =
+      Node.Path.join2(communityPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
+    switch BlogFrontmatter.decode(data) {
+    | Error(msg) => Js.Exn.raiseError(msg)
+    | Ok(d) => {
+        path: Node.Path.join2("community", path),
+        frontmatter: d,
+        archived: false,
+      }
+    }
+  })
+
+  Js.Array2.concatMany(
+    nonArchivedPosts,
+    [archivedPosts, communityPosts],
+  )->Js.Array2.sortInPlaceWith((a, b) => {
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
   })
 }
@@ -102,24 +121,24 @@ let getLivePosts = () => {
   })
 }
 
-let getArchivedPosts = () => {
+let getSpecialPosts = directory => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
-  let archivedPostsDirectory = Node.Path.join2(postsDirectory, "archive")
+  let specialPostsDirectory = Node.Path.join2(postsDirectory, directory)
 
-  let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
+  let specialPosts = mdxFiles(specialPostsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
-      Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
+      Node.Path.join2(specialPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
     | Error(msg) => Js.Exn.raiseError(msg)
     | Ok(d) => {
-        path: Node.Path.join2("archive", path),
+        path: Node.Path.join2(directory, path),
         frontmatter: d,
-        archived: true,
+        archived: directory === "archive",
       }
     }
   })
 
-  archivedPosts->Js.Array2.sortInPlaceWith((a, b) => {
+  specialPosts->Js.Array2.sortInPlaceWith((a, b) => {
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
   })
 }
