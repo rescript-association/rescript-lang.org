@@ -172,7 +172,10 @@ module FeatureCard = {
               <div>
                 <a
                   className="hover:text-gray-60"
-                  href={"https://x.com/" ++ author.xHandle}
+                  href={switch author.social {
+                  | X(handle) => "https://x.com/" ++ handle
+                  | Bluesky(handle) => "https://bsky.app/profile/" ++ handle
+                  }}
                   rel="noopener noreferrer">
                   {React.string(author.fullname)}
                 </a>
