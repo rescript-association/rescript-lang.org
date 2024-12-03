@@ -1,4 +1,4 @@
-type social = X(string) | BlueSky(string)
+type social = X(string) | Bluesky(string)
 
 type author = {
   username: string,
@@ -70,7 +70,7 @@ let authors = [
     fullname: "Josh Derocher-Vlk",
     role: "Community Member",
     imgUrl: "https://cdn.bsky.app/img/avatar/plain/did:plc:erifxn5qcos2zrxvogse5y5s/bafkreif6v7lrtz24vi5ekumkiwg7n7js55coekszduwhjegfmdopd7tqmi@webp",
-    social: BlueSky("vlkpack.com"),
+    social: Bluesky("vlkpack.com"),
   },
 ]
 

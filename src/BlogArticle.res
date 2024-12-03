@@ -41,7 +41,7 @@ module AuthorBox = {
         <a
           href={switch author.social {
           | X(handle) => "https://x.com/" ++ handle
-          | BlueSky(handle) => "https://bsky.app/profile/" ++ handle
+          | Bluesky(handle) => "https://bsky.app/profile/" ++ handle
           }}
           className="hover:text-gray-80"
           rel="noopener noreferrer">
