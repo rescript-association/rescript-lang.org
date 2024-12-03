@@ -22,6 +22,9 @@ body {
   background: transparent; /* Chrome/Safari/Webkit */
 }
 
+a > code {
+  @apply text-fire !important;
+}
 
 @tailwind utilities;
 

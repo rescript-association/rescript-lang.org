@@ -16,7 +16,7 @@ canonical: "/docs/manual/latest/build-configuration"
 If you're using an editor like VSCode, put the following code as your first field in `bsconfig.json` to get schema autocompletion!
 
 ```json
-"$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json"
+"$schema": "https://raw.githubusercontent.com/rescript-lang/rescript/master/docs/docson/build-schema.json"
 ```
 
 ## name, namespace
@@ -193,4 +193,4 @@ When `NINJA_ANSI_FORCED` is set to `1`: `bsb` produces color.
 When `NINJA_ANSI_FORCED` is set to `0`: `bsb` doesn't produce color.
 When `NINJA_ANSI_FORCED` is not set: `bsb` might or might not produce color, depending on a smart detection of where it's outputted.
 
-> Note that bsc, the barebone compiler, will always be passed `-color always`. See more details in [this issue](https://github.com/rescript-lang/rescript-compiler/issues/2984#issuecomment-410669163).
+> Note that bsc, the barebone compiler, will always be passed `-color always`. See more details in [this issue](https://github.com/rescript-lang/rescript/issues/2984#issuecomment-410669163).

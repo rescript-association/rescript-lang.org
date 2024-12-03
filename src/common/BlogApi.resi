@@ -14,7 +14,7 @@ module RssFeed: {
     title: string,
     href: string,
     description: string,
-    pubDate: Js.Date.t,
+    pubDate: Date.t,
   }
   let getLatest: (~max: int=?, ~baseUrl: string=?, unit) => array<item>
   let toXmlString: (~siteTitle: string=?, ~siteDescription: string=?, array<item>) => string

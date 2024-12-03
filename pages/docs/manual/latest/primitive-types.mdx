@@ -120,7 +120,7 @@ var r = /b/g;
 
 </CodeTab>
 
-A regular expression like the above has the type `Re.t`. The [Re](api/core/re) module contains the regular expression helpers you have seen in JS.
+A regular expression like the above has the type `Re.t`. The [RegExp](api/core/regexp) module contains the regular expression helpers you have seen in JS.
 
 ## Boolean
 
@@ -180,7 +180,7 @@ As `bigint` is a different data type than `int`, it's necessary to open the corr
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-open! Js.BigInt
+open! BigInt
 
 let a = 9007199254740991n + 9007199254740991n
 let b = 2n ** 2n
@@ -198,7 +198,7 @@ It also supports all the bitwise operations, except unsigned shift right (`>>>`)
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-open! Js.BigInt
+open! BigInt
 
 let a = land(1n, 1n)
 let b = lor(1n, 1n)

@@ -105,6 +105,37 @@ In a `send`, the object is always the first argument. Actual arguments of the me
 
 Ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model that in ReScript too, through the [pipe operator](pipe.md).
 
+### Nested function call
+
+`@send` can also accept a `@scope(("itemOne","itemTwo"))` to access a function on a nested property.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```res example
+type stripe
+
+@module("stripe") @new
+external make: string => stripe = "default"
+
+type createSession = {}
+
+type sessionResult
+
+@send
+@scope(("checkout", "sessions"))
+external createCheckoutSession: (stripe, createSession) => 
+  Promise.t<sessionResult> = "create"
+
+let stripe = make("sk_...")
+let session = stripe->createCheckoutSession({})
+```
+```js
+import Stripe from "stripe";
+
+var stripe = new Stripe("sk_...");
+var session = stripe.checkout.sessions.create({});
+```
+</CodeTab>
+
 ## Variadic Function Arguments
 
 You might have JS functions that take an arbitrary amount of arguments. ReScript supports modeling those, under the condition that the arbitrary arguments part is homogenous (aka of the same type). If so, add `variadic` to your `external`.

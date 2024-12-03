@@ -2,7 +2,7 @@
 let make = (~onChange, ~version: string, ~availableVersions: array<(string, string)>) => {
   // array<(version, label)>
 
-  let children = Belt.Array.map(availableVersions, ((ver, label)) => {
+  let children = Array.map(availableVersions, ((ver, label)) => {
     <option className="py-4" key=ver value=ver> {React.string(label)} </option>
   })
   <select

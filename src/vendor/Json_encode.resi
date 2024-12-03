@@ -1,24 +1,24 @@
-type encoder<'a> = 'a => Js.Json.t
+type encoder<'a> = 'a => JSON.t
 
-@val external null: Js.Json.t = "null"
-external string: string => Js.Json.t = "%identity"
-external float: float => Js.Json.t = "%identity"
-external int: int => Js.Json.t = "%identity"
-external bool: bool => Js.Json.t = "%identity"
-let char: char => Js.Json.t
-let date: Js.Date.t => Js.Json.t
-let nullable: (encoder<'a>, option<'a>) => Js.Json.t
+@val external null: JSON.t = "null"
+external string: string => JSON.t = "%identity"
+external float: float => JSON.t = "%identity"
+external int: int => JSON.t = "%identity"
+external bool: bool => JSON.t = "%identity"
+let char: char => JSON.t
+let date: Date.t => JSON.t
+let nullable: (encoder<'a>, option<'a>) => JSON.t
 let withDefault: ('a, 'b => 'a, option<'b>) => 'a
-external jsonDict: Js_dict.t<Js.Json.t> => Js.Json.t = "%identity"
-let dict: (encoder<'a>, Js.Dict.t<'a>) => Js.Json.t
-let object_: list<(Js.Dict.key, Js.Json.t)> => Js.Json.t
-external jsonArray: array<Js.Json.t> => Js.Json.t = "%identity"
-let array: (encoder<'a>, array<'a>) => Js.Json.t
-let list: (encoder<'a>, list<'a>) => Js.Json.t
-let pair: (encoder<'a>, encoder<'b>, ('a, 'b)) => Js.Json.t
-let tuple2: (encoder<'a>, encoder<'b>, ('a, 'b)) => Js.Json.t
-let tuple3: (encoder<'a>, encoder<'b>, encoder<'c>, ('a, 'b, 'c)) => Js.Json.t
-let tuple4: (encoder<'a>, encoder<'b>, encoder<'c>, encoder<'d>, ('a, 'b, 'c, 'd)) => Js.Json.t
-external stringArray: array<string> => Js.Json.t = "%identity"
-external numberArray: array<float> => Js.Json.t = "%identity"
-external boolArray: array<bool> => Js.Json.t = "%identity"
+external jsonDict: Dict.t<JSON.t> => JSON.t = "%identity"
+let dict: (encoder<'a>, Dict.t<'a>) => JSON.t
+let object_: list<(string, JSON.t)> => JSON.t
+external jsonArray: array<JSON.t> => JSON.t = "%identity"
+let array: (encoder<'a>, array<'a>) => JSON.t
+let list: (encoder<'a>, list<'a>) => JSON.t
+let pair: (encoder<'a>, encoder<'b>, ('a, 'b)) => JSON.t
+let tuple2: (encoder<'a>, encoder<'b>, ('a, 'b)) => JSON.t
+let tuple3: (encoder<'a>, encoder<'b>, encoder<'c>, ('a, 'b, 'c)) => JSON.t
+let tuple4: (encoder<'a>, encoder<'b>, encoder<'c>, encoder<'d>, ('a, 'b, 'c, 'd)) => JSON.t
+external stringArray: array<string> => JSON.t = "%identity"
+external numberArray: array<float> => JSON.t = "%identity"
+external boolArray: array<bool> => JSON.t = "%identity"

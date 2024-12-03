@@ -198,7 +198,7 @@ In case of the TypeScript project using `Bundler` module resolution, `allowImpor
 
 ## Testing the Whole Setup
 
-Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g. [Hooks.res](https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/src/Hooks.res).
+Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g. [Hooks.res](https://github.com/rescript-lang/rescript/blob/master/tests/gentype_tests/typescript-react-example/src/Hooks.res).
 
 Save the file and rebuild the project via `npm run res:build` or similar. You should now see a `*.gen.tsx` file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`).
 
@@ -214,6 +214,55 @@ These features are for experimentation only. They could be changed/removed any t
 
 - Export object and record types as interfaces. To activate, add `"exportInterfaces": true` to the configuration. The types are also renamed from `name` to `Iname`.
 
+
+## Shims
+
+A shim is a TS file that provides user-provided definitions for library types.
+
+Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.
+  - Example: `Array<string>` with format: `"RescriptModule=JavaScriptModule"`
+
+Configure your shim files within `"gentypeconfig"` in your [`rescript.json`]:
+
+```json
+{
+  "gentypeconfig": {
+    "shims": {
+      "Js": "Js",
+      "ReactEvent": "ReactEvent",
+      "RescriptPervasives": "RescriptPervasives",
+      "ReasonReact": "ReactShim"
+    },
+  },
+}
+```
+
+and add relevant `.shim.ts` files in a directory which is visible by ReScript e.g. 
+
+```
+├── rescript.json
+├── src
+│   ├── shims
+│   │   ├── Js.shim.ts
+│   │   ├── ReactEvent.shim.ts
+│   │   └── RescriptPervasives.shim.ts
+```
+
+Here are some examples:
+
+```ts
+// Excerpt from https://github.com/rescript-lang/rescript/blob/master/tests/gentype_tests/typescript-react-example/src/shims/Js.shim.ts
+export type Json_t = unknown;
+export type t = unknown;
+```
+
+```ts
+// Excerpt from https://github.com/rescript-lang/rescript/tree/master/tests/gentype_tests/typescript-react-example/src/shims/JsxEvent.shim.ts
+export type inputFocusEvent = React.FocusEvent<HTMLInputElement>;
+```
+
+More complete example shims can be found [here](https://github.com/rescript-lang/rescript/blob/master/tests/gentype_tests/typescript-react-example/src/shims/).
+
 ## Deprecated features
 
 Features related to generating runtimes were deprecated since v11 and should no longer be used.
@@ -223,7 +272,7 @@ Features related to generating runtimes were deprecated since v11 and should no 
 - **`@genType.import`**
 - TypeScript Shims
 
-genType does not generate anything runtime-related, and in the near future it generates definition files (`*.d.ts`) directly (See the [roadmap](https://github.com/rescript-lang/rescript-compiler/issues/6196)).
+genType does not generate anything runtime-related, and in the near future it generates definition files (`*.d.ts`) directly (See the [roadmap](https://github.com/rescript-lang/rescript/issues/6196)).
 
 If any runtime code is required for interoperability with JavaScript / TypeScript projects, it can be written by hand, or request a relevant features (e.g. `@deriving`) to the compiler.
 

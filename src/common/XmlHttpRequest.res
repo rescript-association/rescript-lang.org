@@ -118,17 +118,17 @@ let decodeReadyState = x =>
 let readyState = (xhr: t) => decodeReadyState(readyStateNum(xhr))
 
 @get
-external responseArrayBuffer: t => Js.Nullable.t<Js.Typed_array.array_buffer> = "response"
+external responseArrayBuffer: t => Nullable.t<ArrayBuffer.t> = "response"
 
 // Response property with different encodings
 @get
-external responseDocument: t => Js.Nullable.t<Dom.document> = "response"
-@get external responseJson: t => Js.Nullable.t<Js.Json.t> = "response"
-@get external responseText: t => Js.Nullable.t<string> = "responseText"
+external responseDocument: t => Nullable.t<Dom.document> = "response"
+@get external responseJson: t => Nullable.t<JSON.t> = "response"
+@get external responseText: t => Nullable.t<string> = "responseText"
 @get external responseType: t => string = "responseType"
-@get external responseUrl: t => Js.Nullable.t<string> = "responseUrl"
+@get external responseUrl: t => Nullable.t<string> = "responseUrl"
 @get
-external responseXml: t => Js.Nullable.t<Dom.xmlDocument> = "responseXml"
+external responseXml: t => Nullable.t<Dom.xmlDocument> = "responseXml"
 
 @set
 external setResponseType: (
@@ -153,10 +153,10 @@ external setResponseType: (
 @send external abort: t => unit = "abort"
 
 @send
-external getAllResponseHeaders: t => Js.Nullable.t<string> = "getAllResponseHeaders"
+external getAllResponseHeaders: t => Nullable.t<string> = "getAllResponseHeaders"
 
 @send
-external getResponseHeader: (t, string) => Js.Nullable.t<string> = "getResponseHeader"
+external getResponseHeader: (t, string) => Nullable.t<string> = "getResponseHeader"
 
 @send external open_: (t, ~method: string, ~url: string) => unit = "open"
 
@@ -165,7 +165,7 @@ external getResponseHeader: (t, string) => Js.Nullable.t<string> = "getResponseH
 @send external send: t => unit = "send"
 
 @send
-external sendArrayBuffer: (t, Js.Typed_array.array_buffer) => unit = "send"
+external sendArrayBuffer: (t, ArrayBuffer.t) => unit = "send"
 
 @send external sendDocument: (t, Dom.document) => unit = "send"
 

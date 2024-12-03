@@ -7,9 +7,9 @@
 module Link = Next.Link
 
 module Toc = {
-  type raw = Js.Dict.t<{
+  type raw = Dict.t<{
     "title": string,
-    "category": Js.Nullable.t<string>,
+    "category": Nullable.t<string>,
     "headers": array<{
       "name": string,
       "href": string,
@@ -29,7 +29,7 @@ module Toc = {
   @react.component
   let make = (~entries: array<entry>) =>
     <ul className="mt-3 py-1 mb-4 border-l border-fire-10">
-      {Belt.Array.map(entries, ({header, href}) =>
+      {Array.map(entries, ({header, href}) =>
         <li key=header className="pl-2 mt-2 first:mt-1">
           <Link
             href
@@ -66,7 +66,7 @@ module Sidebar = {
       ~items: array<t>,
     ) =>
       <ul className="mt-2 text-14 font-medium">
-        {Belt.Array.map(items, m => {
+        {Array.map(items, m => {
           let hidden = isHidden ? "hidden" : "block"
           let active = isItemActive(m)
             ? ` bg-fire-5 text-red-500 leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-70 `
@@ -86,7 +86,7 @@ module Sidebar = {
             </Link>
             {switch activeToc {
             | Some({entries}) =>
-              if Belt.Array.length(entries) === 0 {
+              if Array.length(entries) === 0 {
                 React.null
               } else {
                 <Toc entries />
@@ -161,7 +161,7 @@ module Sidebar = {
  */
           <div className="mb-56">
             {categories
-            ->Belt.Array.map(category =>
+            ->Array.map(category =>
               <div key=category.name>
                 <Category getActiveToc isItemActive category />
               </div>
@@ -178,14 +178,14 @@ module BreadCrumbs = {
   @react.component
   let make = (~crumbs: list<Url.breadcrumb>) =>
     <div className="w-full captions overflow-x-auto text-gray-60">
-      {Belt.List.mapWithIndex(crumbs, (i, crumb) => {
-        let item = if i === Belt.List.length(crumbs) - 1 {
-          <span key={Belt.Int.toString(i)}> {React.string(crumb.name)} </span>
+      {List.mapWithIndex(crumbs, (crumb, i) => {
+        let item = if i === List.length(crumbs) - 1 {
+          <span key={Int.toString(i)}> {React.string(crumb.name)} </span>
         } else {
-          <Link key={Belt.Int.toString(i)} href=crumb.href> {React.string(crumb.name)} </Link>
+          <Link key={Int.toString(i)} href=crumb.href> {React.string(crumb.name)} </Link>
         }
         if i > 0 {
-          <span key={Belt.Int.toString(i)}>
+          <span key={Int.toString(i)}>
             {React.string(" / ")}
             item
           </span>
@@ -193,7 +193,7 @@ module BreadCrumbs = {
           item
         }
       })
-      ->Belt.List.toArray
+      ->List.toArray
       ->React.array}
     </div>
 }
@@ -231,8 +231,7 @@ let make = (
   | Some(l) => List.length(l) > 0
   }
 
-  let breadcrumbs =
-    breadcrumbs->Belt.Option.mapWithDefault(React.null, crumbs => <BreadCrumbs crumbs />)
+  let breadcrumbs = breadcrumbs->Option.mapOr(React.null, crumbs => <BreadCrumbs crumbs />)
 
   let (_isSidebarOpen, setSidebarOpen) = sidebarState
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
@@ -269,12 +268,12 @@ let make = (
 
   let pagination = switch categories {
   | Some(categories) =>
-    let items = categories->Belt.Array.flatMap(c => c.items)
+    let items = categories->Array.flatMap(c => c.items)
 
-    switch items->Js.Array2.findIndex(item => item.href === router.route) {
+    switch items->Array.findIndex(item => item.href === router.route) {
     | -1 => React.null
     | i =>
-      let previous = switch items->Belt.Array.get(i - 1) {
+      let previous = switch items->Array.get(i - 1) {
       | Some({name, href}) =>
         <Link
           href
@@ -284,7 +283,7 @@ let make = (
         </Link>
       | None => React.null
       }
-      let next = switch items->Belt.Array.get(i + 1) {
+      let next = switch items->Array.get(i + 1) {
       | Some({name, href}) =>
         <Link
           href

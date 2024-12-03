@@ -18,7 +18,7 @@ module Link = Next.Link
 let defaultPreviewImg = "/static/Art-3-rescript-launch.jpg"
 
 // For encoding reasons, see https://shripadk.github.io/react/docs/jsx-gotchas.html
-let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
+let middleDotSpacer = " " ++ (String.fromCharCode(183) ++ " ")
 
 module Badge = {
   @react.component
@@ -52,7 +52,7 @@ module CategorySelector = {
 
     <div className="text-16 w-full flex items-center justify-between text-gray-60">
       {tabs
-      ->Belt.Array.map(tab => {
+      ->Array.map(tab => {
         // Deep comparison here!
         let isActive = selected == tab
         let text = (tab :> string)
@@ -81,7 +81,7 @@ module BlogCard = {
     ~author as _: BlogFrontmatter.author,
     ~category: option<string>=?,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
-    ~date: Js.Date.t,
+    ~date: Date.t,
     ~slug: string,
   ) =>
     <section className="h-full">
@@ -129,7 +129,7 @@ module FeatureCard = {
     ~title: string="Unknown Title",
     ~author: BlogFrontmatter.author,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
-    ~date: Js.Date.t,
+    ~date: Date.t,
     ~category: option<string>=?,
     ~firstParagraph: string="",
     ~slug: string,
@@ -172,10 +172,7 @@ module FeatureCard = {
               <div>
                 <a
                   className="hover:text-gray-60"
-                  href={switch author.social {
-                  | Twitter(handle) => "https://twitter.com/" ++ handle
-                  | BlueSky(handle) => "https://bsky.app/profile/" ++ handle
-                  }}
+                  href={"https://x.com/" ++ author.xHandle}
                   rel="noopener noreferrer">
                   {React.string(author.fullname)}
                 </a>
@@ -209,27 +206,27 @@ type props = {posts: array<BlogApi.post>, category: category}
 let default = (props: props): React.element => {
   let {posts, category} = props
 
-  let content = if Belt.Array.length(posts) === 0 {
+  let content = if Array.length(posts) === 0 {
     /* <div> {React.string("Currently no posts available")} </div>; */
     <div className="mt-8">
       <Markdown.H1> {React.string("Blog not yet available")} </Markdown.H1>
       <Markdown.Warn> {React.string("This blog is currently in the works.")} </Markdown.Warn>
     </div>
   } else {
-    let result = switch Belt.Array.length(posts) {
+    let result = switch Array.length(posts) {
     | 0 => <div> {React.string("No posts for this category available...")} </div>
     | _ =>
       let first = Belt.Array.getExn(posts, 0)
-      let rest = Js.Array2.sliceFrom(posts, 1)
+      let rest = Array.sliceToEnd(posts, ~start=1)
 
       let featureBox =
         <div className="w-full mb-24 lg:px-8 xl:px-0">
           <FeatureCard
-            previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
+            previewImg=?{first.frontmatter.previewImg->Null.toOption}
             title=first.frontmatter.title
-            badge=?{first.frontmatter.badge->Js.Null.toOption}
+            badge=?{first.frontmatter.badge->Null.toOption}
             author=first.frontmatter.author
-            firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
+            firstParagraph=?{first.frontmatter.description->Null.toOption}
             date={first.frontmatter.date->DateStr.toDate}
             slug={BlogApi.blogPathToSlug(first.path)}
           />
@@ -240,12 +237,12 @@ let default = (props: props): React.element => {
       | rest =>
         <div
           className="px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 gap-y-12 md:gap-y-24 w-full">
-          {Js.Array2.map(rest, post => {
-            let badge = post.frontmatter.badge->Js.Null.toOption
+          {Array.map(rest, post => {
+            let badge = post.frontmatter.badge->Null.toOption
 
             <BlogCard
               key={post.path}
-              previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
+              previewImg=?{post.frontmatter.previewImg->Null.toOption}
               title=post.frontmatter.title
               author=post.frontmatter.author
               ?badge

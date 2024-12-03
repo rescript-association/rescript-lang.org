@@ -25,7 +25,7 @@
 
 module GrayMatter = {
   type output = {
-    data: Js.Json.t,
+    data: JSON.t,
     content: string,
   }
 
@@ -39,11 +39,11 @@ type post = {
 }
 
 let blogPathToSlug = path => {
-  path->Js.String2.replaceByRe(%re(`/^(archive|community\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
+  path->String.replaceRegExp(%re(`/^(archive|community\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
 }
 
 let mdxFiles = dir => {
-  Node.Fs.readdirSync(dir)->Js.Array2.filter(path => Node.Path.extname(path) === ".mdx")
+  Node.Fs.readdirSync(dir)->Array.filter(path => Node.Path.extname(path) === ".mdx")
 }
 
 let getAllPosts = () => {
@@ -51,11 +51,11 @@ let getAllPosts = () => {
   let archivedPostsDirectory = Node.Path.join2(postsDirectory, "archive")
   let communityPostsDirectory = Node.Path.join2(postsDirectory, "community")
 
-  let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
+  let nonArchivedPosts = mdxFiles(postsDirectory)->Array.map(path => {
     let {GrayMatter.data: data} =
       Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
-    | Error(msg) => Js.Exn.raiseError(msg)
+    | Error(msg) => Exn.raiseError(msg)
     | Ok(d) => {
         path,
         frontmatter: d,
@@ -64,11 +64,11 @@ let getAllPosts = () => {
     }
   })
 
-  let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
+  let archivedPosts = mdxFiles(archivedPostsDirectory)->Array.map(path => {
     let {GrayMatter.data: data} =
       Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
-    | Error(msg) => Js.Exn.raiseError(msg)
+    | Error(msg) => Exn.raiseError(msg)
     | Ok(d) => {
         path: Node.Path.join2("archive", path),
         frontmatter: d,
@@ -90,22 +90,19 @@ let getAllPosts = () => {
     }
   })
 
-  Js.Array2.concatMany(
-    nonArchivedPosts,
-    [archivedPosts, communityPosts],
-  )->Js.Array2.sortInPlaceWith((a, b) => {
+  Array.concatMany(nonArchivedPosts, [archivedPosts, communityPosts])->Array.toSorted((a, b) =>
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-  })
+  )
 }
 
 let getLivePosts = () => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
 
-  let livePosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
+  let livePosts = mdxFiles(postsDirectory)->Array.map(path => {
     let {GrayMatter.data: data} =
       Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
-    | Error(msg) => Js.Exn.raiseError(msg)
+    | Error(msg) => Exn.raiseError(msg)
     | Ok(d) => {
         path,
         frontmatter: d,
@@ -114,20 +111,20 @@ let getLivePosts = () => {
     }
   })
 
-  livePosts->Js.Array2.sortInPlaceWith((a, b) => {
+  livePosts->Array.toSorted((a, b) =>
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-  })
+  )
 }
 
 let getSpecialPosts = directory => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
   let specialPostsDirectory = Node.Path.join2(postsDirectory, directory)
 
-  let specialPosts = mdxFiles(specialPostsDirectory)->Js.Array2.map(path => {
+  let specialPosts = mdxFiles(specialPostsDirectory)->Array.map(path => {
     let {GrayMatter.data: data} =
       Node.Path.join2(specialPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
-    | Error(msg) => Js.Exn.raiseError(msg)
+    | Error(msg) => Exn.raiseError(msg)
     | Ok(d) => {
         path: Node.Path.join2(directory, path),
         frontmatter: d,
@@ -136,9 +133,9 @@ let getSpecialPosts = directory => {
     }
   })
 
-  specialPosts->Js.Array2.sortInPlaceWith((a, b) => {
+  specialPosts->Array.toSorted((a, b) =>
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-  })
+  )
 }
 
 module RssFeed = {
@@ -157,7 +154,7 @@ module RssFeed = {
     title: string,
     href: string,
     description: string,
-    pubDate: Js.Date.t,
+    pubDate: Date.t,
   }
 
   // TODO: This is yet again a dirty approach to prevent UTC to substract too many
@@ -165,17 +162,17 @@ module RssFeed = {
   //       to 15 o clock. We need to reconsider the way we parse blog article dates,
   //       since the dates should always be parsed from a single timezone perspective
   let dateToUTCString = date => {
-    date->Js.Date.setHours(15.0)->ignore
-    date->Js.Date.toUTCString
+    date->Date.setHours(15)->ignore
+    date->Date.toUTCString
   }
 
   // Retrieves the most recent [max] blog post feed items
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
     let items =
       getAllPosts()
-      ->Js.Array2.map(post => {
+      ->Array.map(post => {
         let fm = post.frontmatter
-        let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
+        let description = Null.toOption(fm.description)->Option.getOr("")
         {
           title: fm.title,
           href: baseUrl ++ "/blog/" ++ blogPathToSlug(post.path),
@@ -183,22 +180,22 @@ module RssFeed = {
           pubDate: DateStr.toDate(fm.date),
         }
       })
-      ->Js.Array2.slice(~start=0, ~end_=max)
+      ->Array.slice(~start=0, ~end=max)
     items
   }
 
   let toXmlString = (~siteTitle="ReScript Blog", ~siteDescription="", items: array<item>) => {
     let latestPubDateElement =
-      Belt.Array.get(items, 0)
-      ->Belt.Option.map(item => {
+      items[0]
+      ->Option.map(item => {
         let latestPubDateStr = item.pubDate->dateToUTCString
         `<lastBuildDate>${latestPubDateStr}</lastBuildDate>`
       })
-      ->Belt.Option.getWithDefault("")
+      ->Option.getOr("")
 
     let itemsStr =
       items
-      ->Js.Array2.map(({title, pubDate, description, href}) => {
+      ->Array.map(({title, pubDate, description, href}) => {
         let descriptionElement = switch description {
         | "" => ""
         | desc =>
@@ -218,7 +215,7 @@ module RssFeed = {
           <pubDate>${dateStr}</pubDate>
         </item>`
       })
-      ->Js.Array2.joinWith("\n")
+      ->Array.join("\n")
 
     let ret = `<?xml version="1.0" encoding="utf-8" ?>
   <rss version="2.0">

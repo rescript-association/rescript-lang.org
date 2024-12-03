@@ -40,7 +40,7 @@ type t = {
     React.element,
   >,
   pre?: Pre.props<React.element> => React.element,
-  a?: A.props<Js.String2.t, string, React.element> => React.element,
+  a?: A.props<string, string, React.element> => React.element,
 }
 
 let default = {

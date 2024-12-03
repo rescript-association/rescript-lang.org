@@ -9,11 +9,14 @@
     "rendering-elements",
     "components-and-props",
     "arrays-and-keys",
+    "events",
     "refs-and-the-dom",
     "context",
+    "memo",
     "styling",
     "router",
-    "lazy-components"
+    "lazy-components",
+    "import-export-reactjs"
   ],
   "Hooks & State Management": [
     "hooks-overview",

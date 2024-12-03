@@ -110,7 +110,7 @@ module V1000 = {
 module V900 = {
   @react.component
   let make = (
-    ~frontmatter: option<Js.Json.t>=?,
+    ~frontmatter: option<JSON.t>=?,
     ~components=MarkdownComponents.default,
     ~children,
   ) => {
@@ -190,11 +190,9 @@ module V800 = {
       open Markdown
 
       let latestUrl =
-        "/" ++
-        (Js.Array2.joinWith(url.base, "/") ++
-        ("/latest/" ++ Js.Array2.joinWith(url.pagepath, "/")))
+        "/" ++ (Array.join(url.base, "/") ++ ("/latest/" ++ Array.join(url.pagepath, "/")))
 
-      let label = switch Js.Array2.find(Constants.allManualVersions, ((v, _)) => {
+      let label = switch Array.find(Constants.allManualVersions, ((v, _)) => {
         v === version
       }) {
       | Some((_, label)) => label

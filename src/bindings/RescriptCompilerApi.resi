@@ -16,7 +16,7 @@ module Lang: {
 
   let toExt: t => string
 
-  let decode: Js.Json.t => t
+  let decode: JSON.t => t
 }
 
 module Version: {
@@ -25,6 +25,7 @@ module Version: {
     | V2
     | V3
     | V4
+    | V5
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -47,7 +48,7 @@ module LocMsg: {
     endColumn: int,
   }
 
-  let decode: Js.Json.t => t
+  let decode: JSON.t => t
 
   type prefix = [#W | #E]
 
@@ -65,7 +66,7 @@ module Warning: {
     | Warn({warnNumber: int, details: LocMsg.t})
     | WarnErr({warnNumber: int, details: LocMsg.t}) // Describes an erronous warning
 
-  let decode: Js.Json.t => t
+  let decode: JSON.t => t
 
   // Useful for showing errors in a more compact format
   let toCompactErrorLine: t => string
@@ -78,7 +79,7 @@ module WarningFlag: {
     warn_error_flags: string,
   }
 
-  let decode: Js.Json.t => t
+  let decode: JSON.t => t
 }
 
 module TypeHint: {
@@ -98,7 +99,7 @@ module TypeHint: {
     | Binding(data)
     | CoreType(data)
 
-  let decode: Js.Json.t => t
+  let decode: JSON.t => t
 }
 
 module CompileSuccess: {
@@ -109,7 +110,7 @@ module CompileSuccess: {
     time: float, // total compilation time
   }
 
-  let decode: (~time: float, Js.Json.t) => t
+  let decode: (~time: float, JSON.t) => t
 }
 
 module ConvertSuccess: {
@@ -119,7 +120,7 @@ module ConvertSuccess: {
     toLang: Lang.t,
   }
 
-  let decode: Js.Json.t => t
+  let decode: JSON.t => t
 }
 
 module CompileFail: {
@@ -130,7 +131,7 @@ module CompileFail: {
     | WarningFlagErr(WarningFlag.t)
     | OtherErr(array<LocMsg.t>)
 
-  let decode: Js.Json.t => t
+  let decode: JSON.t => t
 }
 
 module CompilationResult: {
@@ -138,10 +139,10 @@ module CompilationResult: {
     | Fail(CompileFail.t) // When a compilation failed with some error result
     | Success(CompileSuccess.t)
     | UnexpectedError(string) // Errors that slip through as uncaught exceptions of the compiler bundle
-    | Unknown(string, Js.Json.t)
+    | Unknown(string, JSON.t)
 
   // TODO: We might change this specific api completely before launching
-  let decode: (~time: float, Js.Json.t) => t
+  let decode: (~time: float, JSON.t) => t
 }
 
 module ConversionResult: {
@@ -149,9 +150,9 @@ module ConversionResult: {
     | Success(ConvertSuccess.t)
     | Fail({fromLang: Lang.t, toLang: Lang.t, details: array<LocMsg.t>}) // When a compilation failed with some error result
     | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
-    | Unknown(string, Js.Json.t)
+    | Unknown(string, JSON.t)
 
-  let decode: (~fromLang: Lang.t, ~toLang: Lang.t, Js.Json.t) => t
+  let decode: (~fromLang: Lang.t, ~toLang: Lang.t, JSON.t) => t
 }
 
 module Config: {
@@ -188,7 +189,7 @@ module Compiler: {
   /*
    * OCaml compiler actions (Note: no pretty print available for OCaml)
    */
-  let ocamlVersion: t => string
+  let ocamlVersion: t => option<string>
   let ocamlCompile: (t, string) => CompilationResult.t
 
   /*

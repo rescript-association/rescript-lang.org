@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: 🚀 rescript-compiler
-    url: https://github.com/rescript-lang/rescript-compiler/issues
-    about: Please report problems about the ReScript compiler and build system here.
+    url: https://github.com/rescript-lang/rescript/issues
+    about: Please report problems about the ReScript compiler, build system and tools here.
   - name: 💻 rescript-vscode
     url: https://github.com/rescript-lang/rescript-vscode/issues
-    about: VSCode language support, LSP, tools
+    about: VSCode language support, LSP
   - name: 📦 create-rescript-app
     url: https://github.com/rescript-lang/create-rescript-app/issues
     about: ReScript's project generator
@@ -13,7 +13,7 @@ contact_links:
     url: https://github.com/rescript-lang/rescript-react/issues
     about: ReScript bindings to React.js
   - name: 🌐 rescript-core
-    url: https://github.com/rescript-association/rescript-core/issues
+    url: https://github.com/rescript-lang/rescript-core/issues
     about: New ReScript standard library
   - name: 💬 ReScript Forum
     url: https://forum.rescript-lang.org/

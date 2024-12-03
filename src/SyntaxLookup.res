@@ -55,9 +55,9 @@ module Status = {
 
   let compare = (a, b) =>
     switch (a, b) {
-    | (Deprecated, Deprecated) | (Active, Active) => 0
-    | (Active, Deprecated) => -1
-    | (Deprecated, Active) => 1
+    | (Deprecated, Deprecated) | (Active, Active) => Ordering.equal
+    | (Active, Deprecated) => Ordering.less
+    | (Deprecated, Active) => Ordering.greater
     }
 }
 
@@ -76,7 +76,7 @@ module Item = {
 
   let compare = (a, b) =>
     switch Status.compare(a.status, b.status) {
-    | 0 => String.compare(a.name, b.name)
+    | 0. => String.compare(a.name, b.name)
     | x => x
     }
 }
@@ -91,7 +91,7 @@ type itemInfo = {
 }
 
 let getAnchor = path => {
-  switch Js.String2.split(path, "#") {
+  switch String.split(path, "#") {
   | [_, anchor] => Some(anchor)
   | _ => None
   }
@@ -114,7 +114,7 @@ module Tag = {
 module DetailBox = {
   @react.component
   let make = (~summary: string, ~children: React.element) => {
-    let summaryEl = switch Js.String2.split(summary, "`") {
+    let summaryEl = switch String.split(summary, "`") {
     | [] => React.null
     | [first, second, third] =>
       [
@@ -122,11 +122,11 @@ module DetailBox = {
         <span className="text-fire"> {React.string(second)} </span>,
         React.string(third),
       ]
-      ->Belt.Array.mapWithIndex((i, el) => {
-        <span key={Belt.Int.toString(i)}> el </span>
+      ->Array.mapWithIndex((el, i) => {
+        <span key={Int.toString(i)}> el </span>
       })
       ->React.array
-    | more => Belt.Array.map(more, s => React.string(s))->React.array
+    | more => Array.map(more, s => React.string(s))->React.array
     }
 
     <div>
@@ -149,7 +149,7 @@ let scrollToTop = () => scrollTo(0, 0)
 type props = {mdxSources: array<MdxRemote.output>}
 type params = {slug: string}
 
-let decode = (json: Js.Json.t) => {
+let decode = (json: JSON.t) => {
   open Json.Decode
   let id = json->(field("id", string, _))
   let keywords = json->(field("keywords", array(string, ...), _))
@@ -159,7 +159,7 @@ let decode = (json: Js.Json.t) => {
   let status =
     json
     ->optional(field("status", string, _), _)
-    ->Belt.Option.mapWithDefault(Status.Active, Status.fromString)
+    ->Option.mapOr(Status.Active, Status.fromString)
 
   {
     id,
@@ -174,7 +174,7 @@ let decode = (json: Js.Json.t) => {
 let default = (props: props) => {
   let {mdxSources} = props
 
-  let allItems = mdxSources->Js.Array2.map(mdxSource => {
+  let allItems = mdxSources->Array.map(mdxSource => {
     let {id, keywords, category, summary, name, status} = decode(mdxSource.frontmatter)
 
     let children =
@@ -204,14 +204,14 @@ let default = (props: props) => {
   let router = Next.Router.useRouter()
   let (state, setState) = React.useState(_ => ShowAll)
 
-  let findItemById = id => allItems->Js.Array2.find(item => item.id === id)
+  let findItemById = id => allItems->Array.find(item => item.id === id)
 
-  let findItemByExactName = name => allItems->Js.Array2.find(item => item.name === name)
+  let findItemByExactName = name => allItems->Array.find(item => item.name === name)
 
   let searchItems = value =>
     fuse
     ->Fuse.search(value)
-    ->Belt.Array.map(m => {
+    ->Array.map(m => {
       m["item"]
     })
 
@@ -280,7 +280,7 @@ let default = (props: props) => {
       ExtensionPoints,
       SpecialValues,
       Other,
-    ]->Belt.Array.map(cat => {
+    ]->Array.map(cat => {
       (cat->Category.toString, [])
     })
 
@@ -290,24 +290,24 @@ let default = (props: props) => {
     | ShowFiltered(_, items) => items
     }
 
-    Belt.Array.reduce(items, Js.Dict.fromArray(initial), (acc, item) => {
+    Array.reduce(items, Dict.fromArray(initial), (acc, item) => {
       let key = item.category->Category.toString
-      Js.Dict.get(acc, key)->Belt.Option.mapWithDefault(acc, items => {
-        Js.Array2.push(items, item)->ignore
-        Js.Dict.set(acc, key, items)
+      Dict.get(acc, key)->Option.mapOr(acc, items => {
+        Array.push(items, item)->ignore
+        Dict.set(acc, key, items)
         acc
       })
     })
-    ->Js.Dict.entries
-    ->Belt.Array.reduce([], (acc, entry) => {
+    ->Dict.toArray
+    ->Array.reduce([], (acc, entry) => {
       let (title, items) = entry
-      if Js.Array.length(items) === 0 {
+      if Array.length(items) === 0 {
         acc
       } else {
         let children =
           items
-          ->Belt.SortArray.stableSortBy(Item.compare)
-          ->Belt.Array.map(item => {
+          ->Array.toSorted(Item.compare)
+          ->Array.map(item => {
             let onMouseDown = evt => {
               ReactEvent.Mouse.preventDefault(evt)
               onSearchValueChange(item.name)
@@ -320,7 +320,7 @@ let default = (props: props) => {
           <div key=title className="first:mt-0 mt-12">
             <Category title> {React.array(children)} </Category>
           </div>
-        Js.Array2.push(acc, el)->ignore
+        Array.push(acc, el)->ignore
         acc
       }
     })
@@ -351,7 +351,7 @@ let default = (props: props) => {
         <div className="w-full" style={ReactDOM.Style.make(~maxWidth="34rem", ())}>
           <SearchBox
             placeholder="Enter keywords or syntax..."
-            completionValues={Belt.Array.map(completionItems, item => item.name)}
+            completionValues={Array.map(completionItems, item => item.name)}
             value=searchValue
             onClear=onSearchClear
             onValueChange=onSearchValueChange
@@ -391,7 +391,7 @@ let default = (props: props) => {
 let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let dir = Node.Path.resolve("misc_docs", "syntax")
 
-  let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
+  let allFiles = Node.Fs.readdirSync(dir)->Array.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
     let source = fullPath->Node.Fs.readFileSync
     await MdxRemote.serialize(
@@ -400,7 +400,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
     )
   })
 
-  let mdxSources = await Js.Promise2.all(allFiles)
+  let mdxSources = await Promise.all(allFiles)
 
   {"props": {mdxSources: mdxSources}}
 }

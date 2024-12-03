@@ -14,14 +14,14 @@ type urlResource = {
   official: bool,
 }
 
-external unsafeToUrlResource: Js.Json.t => array<urlResource> = "%identity"
+external unsafeToUrlResource: JSON.t => array<urlResource> = "%identity"
 
 type npmPackage = {
   name: string,
   version: string,
   keywords: array<string>,
   description: string,
-  repositoryHref: Js.Null.t<string>,
+  repositoryHref: Null.t<string>,
   npmHref: string,
   searchScore: float,
   maintenanceScore: float,
@@ -44,13 +44,13 @@ module Resource = {
   let shouldFilter = (res: t) => {
     switch res {
     | Npm(pkg) | Outdated(pkg) =>
-      if pkg.name->Js.String2.startsWith("@elm-react") {
+      if pkg.name->String.startsWith("@elm-react") {
         true
-      } else if pkg.name->Js.String2.startsWith("bs-") {
+      } else if pkg.name->String.startsWith("bs-") {
         true
       } else if (
-        pkg.name->Js.String2.startsWith("@reason-react-native") ||
-          pkg.name->Js.String2.startsWith("reason-react-native")
+        pkg.name->String.startsWith("@reason-react-native") ||
+          pkg.name->String.startsWith("reason-react-native")
       ) {
         true
       } else {
@@ -61,8 +61,8 @@ module Resource = {
   }
 
   let filterKeywords = (keywords: array<string>): array<string> => {
-    Belt.Array.keep(keywords, kw => {
-      switch Js.String2.toLowerCase(kw) {
+    Array.filter(keywords, kw => {
+      switch String.toLowerCase(kw) {
       | "reasonml"
       | "reason"
       | "ocaml"
@@ -78,9 +78,7 @@ module Resource = {
   let isOfficial = (res: t) => {
     switch res {
     | Npm(pkg) | Outdated(pkg) =>
-      pkg.name === "rescript" ||
-      pkg.name->Js.String2.startsWith("@rescript/") ||
-      pkg.name === "gentype"
+      pkg.name === "rescript" || pkg.name->String.startsWith("@rescript/") || pkg.name === "gentype"
     | Url(urlRes) => urlRes.official
     }
   }
@@ -102,7 +100,7 @@ module Resource = {
 
     fuser
     ->Fuse.search(pattern)
-    ->Js.Array2.sortInPlaceWith((a, b) => a["item"].searchScore > b["item"].searchScore ? -1 : 1)
+    ->Array.toSorted((a, b) => Float.compare(a["item"].searchScore, b["item"].searchScore))
   }
 
   let applyUrlResourceSearch = (urls: array<urlResource>, pattern: string): array<
@@ -124,24 +122,20 @@ module Resource = {
   }
 
   let applySearch = (resources: array<t>, pattern: string): array<t> => {
-    let (allNpms, allUrls, allOutDated) = Belt.Array.reduce(resources, ([], [], []), (
-      acc,
-      next,
-    ) => {
+    let (allNpms, allUrls, allOutDated) = Array.reduce(resources, ([], [], []), (acc, next) => {
       let (npms, resources, outdated) = acc
 
       switch next {
-      | Npm(pkg) => Js.Array2.push(npms, pkg)->ignore
-      | Url(res) => Js.Array2.push(resources, res)->ignore
-      | Outdated(pkg) => Js.Array2.push(outdated, pkg)->ignore
+      | Npm(pkg) => Array.push(npms, pkg)->ignore
+      | Url(res) => Array.push(resources, res)->ignore
+      | Outdated(pkg) => Array.push(outdated, pkg)->ignore
       }
       (npms, resources, outdated)
     })
 
-    let filteredNpm = applyNpmSearch(allNpms, pattern)->Belt.Array.map(m => Npm(m["item"]))
-    let filteredUrls = applyUrlResourceSearch(allUrls, pattern)->Belt.Array.map(m => Url(m["item"]))
-    let filteredOutdated =
-      applyNpmSearch(allOutDated, pattern)->Belt.Array.map(m => Outdated(m["item"]))
+    let filteredNpm = applyNpmSearch(allNpms, pattern)->Array.map(m => Npm(m["item"]))
+    let filteredUrls = applyUrlResourceSearch(allUrls, pattern)->Array.map(m => Url(m["item"]))
+    let filteredOutdated = applyNpmSearch(allOutDated, pattern)->Array.map(m => Outdated(m["item"]))
 
     Belt.Array.concatMany([filteredNpm, filteredUrls, filteredOutdated])
   }
@@ -159,12 +153,12 @@ module Card = {
     }
     let linkBox = switch value {
     | Npm(pkg) | Outdated(pkg) =>
-      let repositoryHref = Js.Null.toOption(pkg.repositoryHref)
+      let repositoryHref = Null.toOption(pkg.repositoryHref)
       let repoEl = switch repositoryHref {
       | Some(href) =>
-        let name = if Js.String2.startsWith(href, "https://github.com") {
+        let name = if String.startsWith(href, "https://github.com") {
           "GitHub"
-        } else if Js.String2.startsWith(href, "https://gitlab.com") {
+        } else if String.startsWith(href, "https://gitlab.com") {
           "GitLab"
         } else {
           "Repository"
@@ -183,8 +177,7 @@ module Card = {
     }
 
     let titleHref = switch value {
-    | Npm(pkg) | Outdated(pkg) =>
-      pkg.repositoryHref->Js.Null.toOption->Belt.Option.getWithDefault(pkg.npmHref)
+    | Npm(pkg) | Outdated(pkg) => pkg.repositoryHref->Null.toOption->Option.getOr(pkg.npmHref)
     | Url(res) => res.urlHref
     }
 
@@ -206,8 +199,8 @@ module Card = {
       </div>
       <div className="mt-4 text-16"> {React.string(description)} </div>
       <div className="space-x-2 mt-4">
-        {Belt.Array.map(keywords, keyword => {
-          let onMouseDown = Belt.Option.map(onKeywordSelect, cb => {
+        {Array.map(keywords, keyword => {
+          let onMouseDown = Option.map(onKeywordSelect, cb => {
             evt => {
               ReactEvent.Mouse.preventDefault(evt)
               cb(keyword)
@@ -380,9 +373,9 @@ let default = (props: props) => {
   })
 
   let allResources = {
-    let npms = props["packages"]->Belt.Array.map(pkg => Resource.Npm(pkg))
-    let urls = props["urlResources"]->Belt.Array.map(res => Resource.Url(res))
-    let outdated = props["unmaintained"]->Belt.Array.map(pkg => Resource.Outdated(pkg))
+    let npms = props["packages"]->Array.map(pkg => Resource.Npm(pkg))
+    let urls = props["urlResources"]->Array.map(res => Resource.Url(res))
+    let outdated = props["unmaintained"]->Array.map(pkg => Resource.Outdated(pkg))
     Belt.Array.concatMany([npms, urls, outdated])
   }
 
@@ -409,10 +402,7 @@ let default = (props: props) => {
     setState(_ => All)
   }
 
-  let (officialResources, communityResources) = Belt.Array.reduce(resources, ([], []), (
-    acc,
-    next,
-  ) => {
+  let (officialResources, communityResources) = Array.reduce(resources, ([], []), (acc, next) => {
     let (official, community) = acc
     let isResourceIncluded = switch next {
     | Npm(_) => filter.includeNpm
@@ -422,9 +412,9 @@ let default = (props: props) => {
     if !isResourceIncluded {
       ()
     } else if filter.includeOfficial && Resource.isOfficial(next) {
-      Js.Array2.push(official, next)->ignore
+      Array.push(official, next)->ignore
     } else if filter.includeCommunity && !Resource.shouldFilter(next) {
-      Js.Array2.push(community, next)->ignore
+      Array.push(community, next)->ignore
     }
     (official, community)
   })
@@ -441,7 +431,7 @@ let default = (props: props) => {
   | resources =>
     <Category title={Category.toString(Official)}>
       <div className="space-y-4">
-        {Belt.Array.map(resources, res => {
+        {Array.map(resources, res => {
           <Card key={Resource.getId(res)} onKeywordSelect value={res} />
         })->React.array}
       </div>
@@ -453,7 +443,7 @@ let default = (props: props) => {
   | resources =>
     <Category title={Category.toString(Community)}>
       <div className="space-y-4">
-        {Belt.Array.map(resources, res => {
+        {Array.map(resources, res => {
           <Card onKeywordSelect key={Resource.getId(res)} value={res} />
         })->React.array}
       </div>
@@ -472,7 +462,7 @@ let default = (props: props) => {
 
   // On second render, this hook runs one more time to actually trigger the search.
   React.useEffect(() => {
-    router.query->Js.Dict.get("search")->Belt.Option.forEach(onValueChange)
+    router.query->Dict.get("search")->Option.forEach(onValueChange)
 
     None
   }, [firstRenderDone.current])
@@ -480,7 +470,7 @@ let default = (props: props) => {
   let updateQuery = value =>
     router->Next.Router.replaceObj({
       pathname: router.pathname,
-      query: value === "" ? Js.Dict.empty() : Js.Dict.fromArray([("search", value)]),
+      query: value === "" ? Dict.make() : Dict.fromArray([("search", value)]),
     })
 
   // When the search term changes, update the router query accordingly.
@@ -559,14 +549,14 @@ module Response = {
 @val external fetchNpmPackages: string => promise<Response.t> = "fetch"
 
 let parsePkgs = data =>
-  Belt.Array.map(data["objects"], item => {
+  Array.map(data["objects"], item => {
     let pkg = item["package"]
     {
       name: pkg["name"],
       version: pkg["version"],
       keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
-      description: Belt.Option.getWithDefault(pkg["description"], ""),
-      repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
+      description: Option.getOr(pkg["description"], ""),
+      repositoryHref: Null.fromOption(pkg["links"]["repository"]),
       npmHref: pkg["links"]["npm"],
       searchScore: item["searchScore"],
       maintenanceScore: item["score"]["detail"]["maintenance"],
@@ -576,13 +566,13 @@ let parsePkgs = data =>
 let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
   let baseUrl = "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.5&quality=0.9"
 
-  let (one, two, three) = await Js.Promise2.all3((
+  let (one, two, three) = await Promise.all3((
     fetchNpmPackages(baseUrl),
     fetchNpmPackages(baseUrl ++ "&from=250"),
     fetchNpmPackages(baseUrl ++ "&from=500"),
   ))
 
-  let (data1, data2, data3) = await Js.Promise2.all3((
+  let (data1, data2, data3) = await Promise.all3((
     one->Response.json,
     two->Response.json,
     three->Response.json,
@@ -592,15 +582,15 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
 
   let pkges =
     parsePkgs(data1)
-    ->Js.Array2.concat(parsePkgs(data2))
-    ->Js.Array2.concat(parsePkgs(data3))
-    ->Js.Array2.filter(pkg => {
-      if packageAllowList->Js.Array2.includes(pkg.name) {
+    ->Array.concat(parsePkgs(data2))
+    ->Array.concat(parsePkgs(data3))
+    ->Array.filter(pkg => {
+      if packageAllowList->Array.includes(pkg.name) {
         true
-      } else if pkg.name->Js.String2.includes("reason") {
+      } else if pkg.name->String.includes("reason") {
         false
       } else if pkg.maintenanceScore < 0.3 {
-        let _ = unmaintained->Js.Array2.push(pkg)
+        let _ = unmaintained->Array.push(pkg)
         false
       } else {
         true
@@ -611,7 +601,7 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
   let urlResources =
     Node.Path.join2(index_data_dir, "packages_url_resources.json")
     ->Node.Fs.readFileSync
-    ->Js.Json.parseExn
+    ->JSON.parseExn
     ->unsafeToUrlResource
   let props: props = {
     "packages": pkges,
@@ -621,6 +611,9 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
 
   {
     "props": props,
-    "revalidate": 43200,
+    "revalidate": switch Node.Process.env->Dict.get("BUILD_STATIC") {
+    | Some("true") => Nullable.undefined
+    | _ => Nullable.make(43200)
+    },
   }
 }
