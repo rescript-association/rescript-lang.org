@@ -58,7 +58,7 @@ module CategorySelector = {
         let text = (tab :> string)
         let href = switch tab {
         | Official => "/blog"
-        | Community => "community"
+        | Community => "/blog/community"
         | Archived => "/blog/archived"
         }
         let className =

@@ -39,9 +39,7 @@ type post = {
 }
 
 let blogPathToSlug = path => {
-  path
-  ->Js.String2.replaceByRe(%re(`/^(archive\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
-  ->Js.String2.replaceByRe(%re(`/^(community\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
+  path->Js.String2.replaceByRe(%re(`/^(archive|community\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
 }
 
 let mdxFiles = dir => {
