@@ -77,11 +77,11 @@ let getAllPosts = () => {
     }
   })
 
-  let communityPosts = mdxFiles(communityPostsDirectory)->Js.Array2.map(path => {
+  let communityPosts = mdxFiles(communityPostsDirectory)->Array.map(path => {
     let {GrayMatter.data: data} =
       Node.Path.join2(communityPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
-    | Error(msg) => Js.Exn.raiseError(msg)
+    | Error(msg) => Exn.raiseError(msg)
     | Ok(d) => {
         path: Node.Path.join2("community", path),
         frontmatter: d,
