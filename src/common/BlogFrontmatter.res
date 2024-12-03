@@ -99,6 +99,7 @@ type t = {
   title: string,
   badge: Null.t<Badge.t>,
   description: Null.t<string>,
+  originalLink: Null.t<string>,
 }
 
 let decodeBadge = (str: string): Badge.t =>

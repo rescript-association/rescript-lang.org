@@ -54,8 +54,7 @@
     "request": "^2.88.0",
     "rescript": "^11.1.0",
     "stringify-object": "^3.3.0",
-    "unified": "^8.4.0",
-    "webpack": "^5.97.0"
+    "unified": "^8.4.0"
   },
   "scripts": {
     "dev": "next",
