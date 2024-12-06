@@ -2041,6 +2041,76 @@
       }
     ]
   },
+  "core/int/bitwise": {
+    "id": "Core.Int.Bitwise",
+    "name": "Bitwise",
+    "docstrings": [],
+    "items": [
+      {
+        "id": "Core.Int.Bitwise.land",
+        "kind": "value",
+        "name": "land",
+        "docstrings": [
+          "`land(n1, n2)` calculates the bitwise logical AND of two integers.\n\n  ## Examples\n\n  ```rescript\n  Int.Bitwise.land(7, 4) == 4\n  ```"
+        ],
+        "signature": "let land: (int, int) => int"
+      },
+      {
+        "id": "Core.Int.Bitwise.lor",
+        "kind": "value",
+        "name": "lor",
+        "docstrings": [
+          "`lor(n1, n2)` calculates the bitwise logical OR of two integers.\n\n  ## Examples\n\n  ```rescript\n  Int.Bitwise.lor(7, 4) == 7\n  ```"
+        ],
+        "signature": "let lor: (int, int) => int"
+      },
+      {
+        "id": "Core.Int.Bitwise.lxor",
+        "kind": "value",
+        "name": "lxor",
+        "docstrings": [
+          "`lxor(n1, n2)` calculates the bitwise logical XOR of two integers.\n\n  ## Examples\n\n  ```rescript\n  Int.Bitwise.lxor(7, 4) == 3\n  ```"
+        ],
+        "signature": "let lxor: (int, int) => int"
+      },
+      {
+        "id": "Core.Int.Bitwise.lnot",
+        "kind": "value",
+        "name": "lnot",
+        "docstrings": [
+          "`lnot(n)` calculates the bitwise logical NOT of an integer.\n\n  ## Examples\n\n  ```rescript\n  Int.Bitwise.lnot(2) == -3\n  ```"
+        ],
+        "signature": "let lnot: int => int"
+      },
+      {
+        "id": "Core.Int.Bitwise.lsl",
+        "kind": "value",
+        "name": "lsl",
+        "docstrings": [
+          "`lsl(n, length)` calculates the bitwise logical left shift of an integer `n` by `length`.\n\n  ## Examples\n\n  ```rescript\n  Int.Bitwise.lsl(4, 1) == 8\n  ```"
+        ],
+        "signature": "let lsl: (int, int) => int"
+      },
+      {
+        "id": "Core.Int.Bitwise.lsr",
+        "kind": "value",
+        "name": "lsr",
+        "docstrings": [
+          "`lsr(n, length)` calculates the bitwise logical right shift of an integer `n` by `length`.\n\n  ## Examples\n\n  ```rescript\n  Int.Bitwise.lsr(8, 1) == 4\n  ```"
+        ],
+        "signature": "let lsr: (int, int) => int"
+      },
+      {
+        "id": "Core.Int.Bitwise.asr",
+        "kind": "value",
+        "name": "asr",
+        "docstrings": [
+          "`asr(n, length)` calculates the bitwise arithmetic right shift of an integer `n` by `length`.\n\n  ## Examples\n\n  ```rescript\n  Int.Bitwise.asr(4, 1) == 2\n  ```"
+        ],
+        "signature": "let asr: (int, int) => int"
+      }
+    ]
+  },
   "core/int/constants": {
     "id": "Core.Int.Constants",
     "name": "Constants",
@@ -4743,11 +4813,38 @@
         "signature": "type value<'a> = {done: bool, value: option<'a>}"
       },
       {
+        "id": "Core.AsyncIterator.make",
+        "kind": "value",
+        "name": "make",
+        "docstrings": [
+          "`make(nextFn)`\n\n  Creates an async iterator from a function that returns the next value of the iterator.\n\n  ## Examples\n  - A simple example, creating an async iterator that returns 1, 2, 3:\n  ```rescript\n  let context = ref(0)\n\n  let asyncIterator = AsyncIterator.make(async () => {\n    let currentValue = context.contents\n    // Increment current value\n    context := currentValue + 1\n    \n    {\n      AsyncIterator.value: Some(currentValue),\n      done: currentValue >= 3\n    }\n  })\n\n  // This will log 1, 2, 3\n  await asyncIterator->AsyncIterator.forEach(value =>\n    switch value {\n    | Some(value) => Console.log(value)\n    | None => ()\n    }\n  )\n  ```"
+        ],
+        "signature": "let make: (unit => promise<value<'value>>) => t<'value>"
+      },
+      {
+        "id": "Core.AsyncIterator.value",
+        "kind": "value",
+        "name": "value",
+        "docstrings": [
+          "`value(value)`\n\n Shorthand for creating a value object with the provided value, and the `done` property set to false.\n\n  ## Examples\n  ```rescript\n  let context = ref(0)\n\n  let asyncIterator = AsyncIterator.make(async () => {\n    let currentValue = context.contents\n    // Increment current value\n    context := currentValue + 1\n    \n    if currentValue >= 3 {\n      AsyncIterator.done()\n    } else {\n      AsyncIterator.value(currentValue)\n    }\n  })\n  ```"
+        ],
+        "signature": "let value: 'value => value<'value>"
+      },
+      {
+        "id": "Core.AsyncIterator.done",
+        "kind": "value",
+        "name": "done",
+        "docstrings": [
+          "`done(~finalValue=?)`\n\n Shorthand for creating a value object with the `done` property set to true, and the provided value as the final value, if any.\n\n  ## Examples\n  ```rescript\n  let context = ref(0)\n\n  let asyncIterator = AsyncIterator.make(async () => {\n    let currentValue = context.contents\n    // Increment current value\n    context := currentValue + 1\n    \n    if currentValue >= 3 {\n      AsyncIterator.done()\n    } else {\n      AsyncIterator.value(currentValue)\n    }\n  })\n  ```"
+        ],
+        "signature": "let done: (~finalValue: 'value=?) => value<'value>"
+      },
+      {
         "id": "Core.AsyncIterator.next",
         "kind": "value",
         "name": "next",
         "docstrings": [
-          "`next(asyncIterator)`\n\nReturns the next value of the iterator, if any.\n\nSee [async iterator protocols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_async_iterator_and_async_iterable_protocols) on MDN.\n\n## Examples\n- A simple example, getting the next value:\n```rescript\n@val external asyncIterator: AsyncIterator.t<int> = \"someAsyncIterator\"\nlet {AsyncIterator.done, value} = await asyncIterator->AsyncIterator.next\n```\n\n- Complete example, including looping over all values:\n```rescript\n// Let's pretend we get an async iterator returning ints from somewhere.\n@val external asyncIterator: AsyncIterator.t<int> = \"someAsyncIterator\"\n\n\nlet processMyAsyncIterator = async () => {\n  // ReScript doesn't have `for ... of` loops, but it's easy to mimic using a while loop.\n  let break = ref(false)\n\n  while !break.contents {\n    // Await the next iterator value\n    let {value, done} = await asyncIterator->AsyncIterator.next\n\n    // Exit the while loop if the iterator says it's done\n    break := done\n\n    // This will log the (int) value of the current async iteration, if a value was returned.\n    Console.log(value)\n  }\n}\n```"
+          "`next(asyncIterator)`\n\nReturns the next value of the iterator, if any.\n\nSee [async iterator protocols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_async_iterator_and_async_iterable_protocols) on MDN.\n\n## Examples\n- A simple example, getting the next value:\n```rescript\n@val external asyncIterator: AsyncIterator.t<int> = \"someAsyncIterator\"\nlet value = await asyncIterator->AsyncIterator.next\n```\n\n- Complete example, including looping over all values:\n```rescript\n// Let's pretend we get an async iterator returning ints from somewhere.\n@val external asyncIterator: AsyncIterator.t<int> = \"someAsyncIterator\"\n\n\nlet processMyAsyncIterator = async () => {\n  // ReScript doesn't have `for ... of` loops, but it's easy to mimic using a while loop.\n  let break = ref(false)\n\n  while !break.contents {\n    // Await the next iterator value\n    let {value, done} = await asyncIterator->AsyncIterator.next\n\n    // Exit the while loop if the iterator says it's done\n    break := done\n\n    // This will log the (int) value of the current async iteration, if a value was returned.\n    Console.log(value)\n  }\n}\n```"
         ],
         "signature": "let next: t<'a> => promise<value<'a>>"
       },
