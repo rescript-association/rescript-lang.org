@@ -142,6 +142,7 @@ let decode = (json: JSON.t): result<t, string> => {
     articleImg: json->optional(field("articleImg", string, ...), _)->Null.fromOption,
     title: json->(field("title", string, _)),
     description: json->(nullable(field("description", string, ...), _)),
+    originalLink: json->optional(field("originalLink", string, ...), _)->Null.fromOption,
   } {
   | fm => Ok(fm)
   | exception DecodeError(str) => Error(str)
