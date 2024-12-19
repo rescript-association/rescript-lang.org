@@ -28,11 +28,31 @@ module V1200 = {
   let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
     let title = "Language Manual"
     let router = Next.Router.useRouter()
-    let version = router.route->Url.parse->Url.getVersionString
+    let url = router.route->Url.parse
+    let version = url->Url.getVersionString
 
     let breadcrumbs = list{
       {Url.name: "Docs", href: "/docs/" ++ version},
       {Url.name: "Language Manual", href: "/docs/manual/" ++ (version ++ "/introduction")},
+    }
+
+    let warnBanner = {
+      open Markdown
+
+      let v11Url =
+        "/" ++ (Array.join(url.base, "/") ++ ("/v11.0.0/" ++ Array.join(url.pagepath, "/")))
+
+      <div className="mb-10">
+        <Warn>
+          <P>
+            {React.string(
+              "You are currently looking at the v12 docs, which are still a work in progress. If you miss anything, you may find it in the older v11 docs ",
+            )}
+            <A href=v11Url> {React.string("here")} </A>
+            {React.string(".")}
+          </P>
+        </Warn>
+      </div>
     }
 
     <V1200Layout
@@ -44,6 +64,7 @@ module V1200 = {
       availableVersions=Constants.allManualVersions
       ?frontmatter
       breadcrumbs>
+      {version === Constants.versions.next ? warnBanner : React.null}
       children
     </V1200Layout>
   }
@@ -234,5 +255,3 @@ module V800 = {
     </V800Layout>
   }
 }
-
-module Latest = V1100
