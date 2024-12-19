@@ -12,12 +12,13 @@ type versions = {
 
 // This is used for the version dropdown in the manual layouts
 let allManualVersions = [
-  ("latest", versions.latest),
+  (versions.latest, versions.latest),
   ("v10.0.0", "v9.1 - v10.1"),
   ("v9.0.0", "v8.2 - v9.0"),
   ("v8.0.0", "v6.0 - v8.2"),
 ]
-let nextVersion = ("next", versions.next)
+
+let nextVersion = versions.latest === versions.next ? None : Some(versions.next, versions.next)
 
 let allReactVersions = [("latest", "v0.12.0"), ("v0.11.0", "v0.11.0"), ("v0.10.0", "v0.10.0")]
 
@@ -30,13 +31,6 @@ let languageManual = version => {
     ("Build System", `/docs/manual/${version}/build-overview`),
   ]
 }
-
-let ecosystem = [
-  ("Package Index", "/packages"),
-  ("rescript-react", "/docs/react/latest/introduction"),
-  ("GenType", "/docs/manual/latest/typescript-integration"),
-  ("Reanalyze", "https://github.com/rescript-lang/reanalyze"),
-]
 
 let tools = [("Syntax Lookup", "/syntax-lookup")]
 

@@ -975,7 +975,7 @@ module Settings = {
                 })
                 <>
                   <option disabled=true className="py-4">
-                    {React.string("---Experimental---")}
+                    {React.string("--- Experimental ---")}
                   </option>
                   {versionByOrder
                   ->Array.map(version => {
@@ -986,7 +986,7 @@ module Settings = {
                   })
                   ->React.array}
                   <option disabled=true className="py-4">
-                    {React.string("---Official Releases---")}
+                    {React.string("--- Official Releases ---")}
                   </option>
                 </>
               }}

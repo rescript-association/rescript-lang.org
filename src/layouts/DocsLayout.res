@@ -239,7 +239,7 @@ module Make = (Content: StaticContent) => {
       ?frontmatter,
       ?version,
       ?availableVersions,
-      nextVersion: Constants.nextVersion,
+      nextVersion: ?Constants.nextVersion,
       ?activeToc,
       categories,
       ?components,

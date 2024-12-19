@@ -27,7 +27,7 @@ let default = (~showVersionSelect=true) => {
   let ecosystem = [
     ("Package Index", "/packages"),
     ("rescript-react", "/docs/react/latest/introduction"),
-    ("GenType", "/docs/manual/latest/typescript-integration"),
+    ("GenType", `/docs/manual/${version}/typescript-integration`),
     ("Reanalyze", "https://github.com/rescript-lang/reanalyze"),
   ]
 
@@ -50,7 +50,7 @@ let default = (~showVersionSelect=true) => {
     <div className="text-fire">
       <VersionSelect
         availableVersions=Constants.allManualVersions
-        nextVersion=Constants.nextVersion
+        nextVersion=?Constants.nextVersion
         onChange
         version
       />
