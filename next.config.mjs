@@ -84,20 +84,6 @@ const config = {
     config.plugins.push(new ProvidePlugin({ React: "react" }));
     return config;
   },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: "/docs/manual/latest/:slug",
-          destination: `/docs/manual/${process.env.VERSION_LATEST}/:slug`,
-        },
-        {
-          source: "/docs/manual/next/:slug",
-          destination: `/docs/manual/${process.env.VERSION_NEXT}/:slug`,
-        },
-      ],
-    };
-  },
   async redirects() {
     return [
       {
@@ -139,6 +125,16 @@ const config = {
         source: "/docs/gentype/latest/supported-types",
         destination: "/docs/manual/latest/typescript-integration",
         permanent: true,
+      },
+      {
+        source: "/docs/manual/latest/:slug*",
+        destination: `/docs/manual/${process.env.VERSION_LATEST}/:slug*`,
+        permanent: false,
+      },
+      {
+        source: "/docs/manual/next/:slug*",
+        destination: `/docs/manual/${process.env.VERSION_NEXT}/:slug*`,
+        permanent: false,
       },
     ];
   },
