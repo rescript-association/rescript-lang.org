@@ -1,3 +1,9 @@
+module SectionHeader = {
+  @react.component
+  let make = (~value) =>
+    <option disabled=true key=value className="py-4"> {React.string(value)} </option>
+}
+
 @react.component
 let make = (
   ~onChange,
@@ -18,13 +24,9 @@ let make = (
     | None => React.null
     | Some((value, label)) =>
       <>
-        <option disabled=true key="next-heading" className="py-4">
-          {React.string("--- Next ---")}
-        </option>
+        <SectionHeader value=Constants.dropdownLabelNext />
         <option className="py-4" key=value value> {React.string(label)} </option>
-        <option disabled=true key="released-heading" className="py-4">
-          {React.string("--- Released ---")}
-        </option>
+        <SectionHeader value=Constants.dropdownLabelReleased />
       </>
     }}
     {React.array(children)}

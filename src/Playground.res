@@ -969,9 +969,7 @@ module Settings = {
                   cmp(b) - cmp(a)
                 })
                 <>
-                  <option disabled=true className="py-4">
-                    {React.string("--- Experimental ---")}
-                  </option>
+                  <VersionSelect.SectionHeader value=Constants.dropdownLabelNext />
                   {versionByOrder
                   ->Array.map(version => {
                     let version = Semver.toString(version)
@@ -980,9 +978,7 @@ module Settings = {
                     </option>
                   })
                   ->React.array}
-                  <option disabled=true className="py-4">
-                    {React.string("--- Official Releases ---")}
-                  </option>
+                  <VersionSelect.SectionHeader value=Constants.dropdownLabelReleased />
                 </>
               }}
               {switch stableVersions {
