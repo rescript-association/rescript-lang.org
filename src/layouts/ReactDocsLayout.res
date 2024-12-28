@@ -25,7 +25,11 @@ module Latest = {
     let router = Next.Router.useRouter()
     let route = router.route
     let url = route->Url.parse
-    let version = url->Url.getVersionString
+
+    let version = switch url.version {
+    | Version(version) => version
+    | _ => "latest"
+    }
 
     let breadcrumbs = list{
       {Url.name: "Docs", href: "/docs/latest"},
@@ -55,7 +59,11 @@ module V0110 = {
     let router = Next.Router.useRouter()
     let route = router.route
     let url = route->Url.parse
-    let version = url->Url.getVersionString
+
+    let version = switch url.version {
+    | Version(version) => version
+    | _ => "latest"
+    }
 
     let breadcrumbs = list{
       {Url.name: "Docs", href: "/docs/latest"},
@@ -84,7 +92,11 @@ module V0100 = {
     let router = Next.Router.useRouter()
     let route = router.route
     let url = route->Url.parse
-    let version = url->Url.getVersionString
+
+    let version = switch url.version {
+    | Version(version) => version
+    | _ => "latest"
+    }
 
     let breadcrumbs = list{
       {Url.name: "Docs", href: "/docs/latest"},

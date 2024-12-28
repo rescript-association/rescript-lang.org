@@ -85,7 +85,7 @@ let make = (
   }, [])
 
   let preludeSection =
-    <div className="flex justify-between text-fire font-medium items-baseline">
+    <div className="flex flex-col justify-between text-fire font-medium items-baseline">
       {React.string(title)}
       {switch version {
       | Some(version) =>
@@ -178,6 +178,7 @@ module Make = (Content: StaticContent) => {
     ~frontmatter=?,
     ~version: option<string>=?,
     ~availableVersions: option<array<(string, string)>>=?,
+    ~nextVersion: option<(string, string)>=?,
     /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
     ~components: option<MarkdownComponents.t>=?,
     ~theme: option<ColorTheme.t>=?,
@@ -239,7 +240,7 @@ module Make = (Content: StaticContent) => {
       ?frontmatter,
       ?version,
       ?availableVersions,
-      nextVersion: ?Constants.nextVersion,
+      ?nextVersion,
       ?activeToc,
       categories,
       ?components,

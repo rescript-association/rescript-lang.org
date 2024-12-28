@@ -32,6 +32,7 @@ module Make: (Content: StaticContent) =>
     ~frontmatter: JSON.t=?,
     ~version: string=?,
     ~availableVersions: array<(string, string)>=?,
+    ~nextVersion: (string, string)=?,
     /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
     ~components: MarkdownComponents.t=?,
     ~theme: ColorTheme.t=?,
