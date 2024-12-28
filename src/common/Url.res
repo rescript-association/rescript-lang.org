@@ -67,6 +67,7 @@ let parse = (route: string): t => {
     let version = switch fullpath[foundVersionIndex] {
     | Some(version) if version === Constants.versions.next => Next
     | Some(version) if version === Constants.versions.latest => Latest
+    | Some("latest") => Latest // still used for React docs
     | Some(v) => Version(v)
     | None => NoVersion
     }

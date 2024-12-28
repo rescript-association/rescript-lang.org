@@ -62,6 +62,7 @@ module V1200 = {
       title
       metaTitleCategory="ReScript Language Manual"
       availableVersions=Constants.allManualVersions
+      nextVersion=?Constants.nextVersion
       ?frontmatter
       breadcrumbs>
       {version === Constants.versions.next ? warnBanner : React.null}
@@ -89,6 +90,7 @@ module V1100 = {
       title
       metaTitleCategory="ReScript Language Manual"
       availableVersions=Constants.allManualVersions
+      nextVersion=?Constants.nextVersion
       ?frontmatter
       breadcrumbs>
       children
@@ -129,6 +131,7 @@ module V1000 = {
       title
       metaTitleCategory="ReScript Language Manual"
       availableVersions=Constants.allManualVersions
+      nextVersion=?Constants.nextVersion
       ?frontmatter
       breadcrumbs>
       children
@@ -173,6 +176,7 @@ module V900 = {
       title
       metaTitleCategory="ReScript Language Manual"
       availableVersions=Constants.allManualVersions
+      nextVersion=?Constants.nextVersion
       ?frontmatter
       breadcrumbs>
       children
@@ -248,6 +252,7 @@ module V800 = {
       title
       metaTitleCategory="ReScript Language Manual"
       availableVersions=Constants.allManualVersions
+      nextVersion=?Constants.nextVersion
       ?frontmatter
       breadcrumbs>
       warnBanner
